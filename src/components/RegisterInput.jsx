@@ -12,6 +12,7 @@ export default function RegisterInput({ onRegisterSuccess }) {
     phone: "",
     password: "",
     email: "",
+    role: ""
   });
 
   const handleChange = (e) => {
@@ -31,23 +32,31 @@ export default function RegisterInput({ onRegisterSuccess }) {
     }
 
     try {
-      const response = await axios.post("/users", formData); // Rota correta para cadastro
+      const response = await axios.post("/users", formData); 
       toaster.create({
         title: "Sucesso",
         description: "Usuário cadastrado com sucesso!",
         type: "success",
       });
-      onRegisterSuccess(); // Redireciona ou limpa o formulário
+      onRegisterSuccess(); 
     } catch (error) {
+      let msg = "Erro ao cadastrar usuário. Tente novamente.";
+      if (error?.response?.data) {
+        if (typeof error.response.data === "string") {
+          msg = error.response.data;
+        } else if (typeof error.response.data.message === "string") {
+          msg = error.response.data.message;
+        }
+      }
       toaster.create({
         title: "Erro",
-        description: error.response?.data || "Erro ao cadastrar usuário.",
+        description: msg,
         type: "error",
       });
     }
   };
 
-  return (
+  return (  
     <Stack spacing={4}>
       <Input
         name="name"
@@ -80,6 +89,13 @@ export default function RegisterInput({ onRegisterSuccess }) {
       <Input
         name="email"
         placeholder="E-mail"
+        onChange={handleChange}
+        borderColor="white"
+        _placeholder={{ color: "white" }}
+      />
+      <Input
+        name="role"
+        placeholder="Cargo (ex: admin, user)"
         onChange={handleChange}
         borderColor="white"
         _placeholder={{ color: "white" }}

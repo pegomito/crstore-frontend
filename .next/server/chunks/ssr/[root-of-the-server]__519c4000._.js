@@ -261,7 +261,8 @@ function RegisterInput({ onRegisterSuccess }) {
         username: "",
         phone: "",
         password: "",
-        email: ""
+        email: "",
+        role: ""
     });
     const handleChange = (e)=>{
         setFormData({
@@ -280,17 +281,25 @@ function RegisterInput({ onRegisterSuccess }) {
             return;
         }
         try {
-            const response = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].post("/users", formData); // Rota correta para cadastro
+            const response = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].post("/users", formData);
             __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$toaster$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toaster"].create({
                 title: "Sucesso",
                 description: "Usuário cadastrado com sucesso!",
                 type: "success"
             });
-            onRegisterSuccess(); // Redireciona ou limpa o formulário
+            onRegisterSuccess();
         } catch (error) {
+            let msg = "Erro ao cadastrar usuário. Tente novamente.";
+            if (error?.response?.data) {
+                if (typeof error.response.data === "string") {
+                    msg = error.response.data;
+                } else if (typeof error.response.data.message === "string") {
+                    msg = error.response.data.message;
+                }
+            }
             __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$toaster$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toaster"].create({
                 title: "Erro",
-                description: error.response?.data || "Erro ao cadastrar usuário.",
+                description: msg,
                 type: "error"
             });
         }
@@ -308,7 +317,7 @@ function RegisterInput({ onRegisterSuccess }) {
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/RegisterInput.jsx",
-                lineNumber: 52,
+                lineNumber: 61,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$input$2f$input$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -321,7 +330,7 @@ function RegisterInput({ onRegisterSuccess }) {
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/RegisterInput.jsx",
-                lineNumber: 59,
+                lineNumber: 68,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$input$2f$input$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -334,7 +343,7 @@ function RegisterInput({ onRegisterSuccess }) {
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/RegisterInput.jsx",
-                lineNumber: 66,
+                lineNumber: 75,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$input$2f$input$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -347,7 +356,7 @@ function RegisterInput({ onRegisterSuccess }) {
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/RegisterInput.jsx",
-                lineNumber: 73,
+                lineNumber: 82,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$input$2f$input$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -360,7 +369,20 @@ function RegisterInput({ onRegisterSuccess }) {
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/RegisterInput.jsx",
-                lineNumber: 80,
+                lineNumber: 89,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$input$2f$input$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
+                name: "role",
+                placeholder: "Cargo (ex: admin, user)",
+                onChange: handleChange,
+                borderColor: "white",
+                _placeholder: {
+                    color: "white"
+                }
+            }, void 0, false, {
+                fileName: "[project]/src/components/RegisterInput.jsx",
+                lineNumber: 96,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$input$2f$input$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -374,7 +396,7 @@ function RegisterInput({ onRegisterSuccess }) {
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/RegisterInput.jsx",
-                lineNumber: 87,
+                lineNumber: 103,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$button$2f$button$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -383,13 +405,13 @@ function RegisterInput({ onRegisterSuccess }) {
                 children: "Cadastrar"
             }, void 0, false, {
                 fileName: "[project]/src/components/RegisterInput.jsx",
-                lineNumber: 95,
+                lineNumber: 111,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/RegisterInput.jsx",
-        lineNumber: 51,
+        lineNumber: 60,
         columnNumber: 5
     }, this);
 }
@@ -473,6 +495,7 @@ function LoginPc() {
                             color: "white",
                             fontSize: 40,
                             fontWeight: 800,
+                            textAlign: "center",
                             children: "Bem-Vindo à "
                         }, void 0, false, {
                             fileName: "[project]/src/app/Login/page.js",
@@ -483,6 +506,7 @@ function LoginPc() {
                             color: "white",
                             fontSize: 40,
                             fontWeight: 800,
+                            textAlign: "center",
                             children: "Loja dos Guri!"
                         }, void 0, false, {
                             fileName: "[project]/src/app/Login/page.js",
@@ -493,23 +517,38 @@ function LoginPc() {
                             fontSize: "lg",
                             color: "white",
                             opacity: 0.8,
-                            children: "Faça login para continuar"
+                            children: "Acesse sua conta e começe a comprar!"
                         }, void 0, false, {
                             fileName: "[project]/src/app/Login/page.js",
                             lineNumber: 48,
                             columnNumber: 11
                         }, this),
-                        isRegistering ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$RegisterInput$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                            onRegisterSuccess: registerForm
-                        }, void 0, false, {
-                            fileName: "[project]/src/app/Login/page.js",
-                            lineNumber: 52,
-                            columnNumber: 13
-                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$LoginInput$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                        isRegistering ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$RegisterInput$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                                    onRegisterSuccess: registerForm
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/Login/page.js",
+                                    lineNumber: 54,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$button$2f$button$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                                    mt: 2,
+                                    colorScheme: "gray",
+                                    variant: "solid",
+                                    onClick: registerForm,
+                                    children: "Voltar ao Login"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/Login/page.js",
+                                    lineNumber: 55,
+                                    columnNumber: 15
+                                }, this)
+                            ]
+                        }, void 0, true) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$LoginInput$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                             onLoginSuccess: loginSuccess
                         }, void 0, false, {
                             fileName: "[project]/src/app/Login/page.js",
-                            lineNumber: 54,
+                            lineNumber: 65,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$button$2f$button$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -520,7 +559,7 @@ function LoginPc() {
                             children: isRegistering ? "Já tem uma conta? Faça login" : "Não tem uma conta? Cadastre-se"
                         }, void 0, false, {
                             fileName: "[project]/src/app/Login/page.js",
-                            lineNumber: 56,
+                            lineNumber: 67,
                             columnNumber: 11
                         }, this)
                     ]
@@ -536,7 +575,7 @@ function LoginPc() {
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$toaster$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Toaster"], {}, void 0, false, {
                 fileName: "[project]/src/app/Login/page.js",
-                lineNumber: 68,
+                lineNumber: 79,
                 columnNumber: 7
             }, this)
         ]
@@ -545,47 +584,7 @@ function LoginPc() {
         lineNumber: 20,
         columnNumber: 5
     }, this);
-} //   return (
- //     <Box
- //       w="100%"
- //       h="100vh"
- //       display="flex"
- //       justifyContent="center"
- //       alignItems="center"
- //       filter="contrast(95%)"
- //       bgGradient="to-r" gradientFrom="blue.700" gradientTo="black" 
- //       bgSize="cover"
- //       bgPosition="center"
- //       bgRepeat="no-repeat"
- //     >
- //       <Box w="50%" display="flex" justifyContent="center" alignItems="center">
- //         <Image
- //           w="55%"
- //           src="https://www.pngplay.com/wp-content/uploads/13/Jordan-Logo-PNG-Clipart-Background.png"
- //           alt="Loading..."
- //         />
- //       </Box>
- //       <Box
- //         w="50%"
- //         display="flex"
- //         justifyContent="center"
- //         alignItems="center"
- //       >
- //         <VStack align="left" >
- //           <Heading color="white" textAlign="left" as="h7" fontSize={40} fontWeight={600} >
- //             Bem-Vindo
- //             <span style={{ fontFamily: "monospace", fontSize: "1.2em", color: "white" }} >!</span>
- //           </Heading>
- //           <Text md="6 " fontSize="lg" color="white" opacity={0.8} >
- //             à Loja dos Guri! 
- //           </Text>
- //           <LoginInput mandarDadosdofilho={receberDadosdoFilho} />
- //         </VStack>
- //       </Box>
- //       <Toaster />
- //     </Box>
- //   );
- // } 
+}
 }}),
 
 };

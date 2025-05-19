@@ -1,24 +1,24 @@
 'use client';
 import React from 'react';
-import { useRouter } from 'next/navigation'; // Import correto do useRouter
-import axios from 'axios';
-import { toaster } from '@/components/ui/toaster'; // Certifique-se de que o toaster está configurado corretamente
+import { useRouter } from 'next/navigation';
+import axios from '@/utils/axios';
+import { toaster } from '@/components/ui/toaster';
 
 export default function LoginRouter({ children }) {
   const router = useRouter();
 
   const loginUsuario = async (content) => {
     try {
-      const response = await axios.post('/users/login', { ...content }); 
+      const response = await axios.post('/users/login', content);
       if (response.status === 200) {
-        const token = response.data.response; 
-        localStorage.setItem('authToken', token); 
+        const token = response.data.response;
+        localStorage.setItem('authToken', token);
         toaster.create({
           title: 'Login realizado com sucesso!',
           description: 'Você foi autenticado com sucesso.',
           type: 'success',
         });
-        router.push('/user');
+        router.push('/lobby');
       } else {
         toaster.create({
           title: 'Erro no login',
@@ -36,9 +36,5 @@ export default function LoginRouter({ children }) {
     }
   };
 
-  return (
-    <div>
-      {children({ loginUsuario })}
-    </div>
-  );
+  return <>{children({ loginUsuario })}</>;
 }

@@ -1,10 +1,9 @@
 'use client';
-import { Input, Button, Stack } from "@chakra-ui/react";
 import { useState } from "react";
+import { Input, Button, Stack } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
-import axios from "@/utils/axios";
 
-export default function LoginInput({ onLoginSuccess }) {
+export default function LoginInput({ onLogin }) {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -14,9 +13,8 @@ export default function LoginInput({ onLoginSuccess }) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = async () => {
+  const handleLogin = () => {
     const { email, password } = formData;
-
     if (!email || !password) {
       toaster.create({
         title: "Erro",
@@ -25,22 +23,7 @@ export default function LoginInput({ onLoginSuccess }) {
       });
       return;
     }
-
-    try {
-      const response = await axios.post("/users/login", formData); // Rota correta para login
-      toaster.create({
-        title: "Sucesso",
-        description: "Login realizado com sucesso!",
-        type: "success",
-      });
-      onLoginSuccess(response.data.response); // Passa o token JWT para o pai
-    } catch (error) {
-      toaster.create({
-        title: "Erro",
-        description: error.response?.data || "Erro ao realizar login.",
-        type: "error",
-      });
-    }
+    onLogin(formData); // Chama a função passada pelo LoginRouter
   };
 
   return (
