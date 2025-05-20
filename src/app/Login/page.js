@@ -47,7 +47,6 @@ export default function LoginPc() {
           <Text fontSize="lg" color="white" opacity={0.8}>
             Acesse sua conta e começe a comprar!
           </Text>
-
           {isRegistering ? (
             <>
               <RegisterInput onRegisterSuccess={registerForm} />
@@ -67,6 +66,7 @@ export default function LoginPc() {
               )}
             </LoginRouter>
           )}
+         
           <Button
             mt={4}
             onClick={registerForm}

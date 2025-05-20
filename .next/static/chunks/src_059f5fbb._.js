@@ -26,13 +26,13 @@ function LoginInput({ onLogin }) {
         email: "",
         password: ""
     });
-    const handleChange = (e)=>{
+    const applyChange = (e)=>{
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
     };
-    const handleLogin = ()=>{
+    const applyLogin = ()=>{
         const { email, password } = formData;
         if (!email || !password) {
             __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$toaster$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toaster"].create({
@@ -50,7 +50,7 @@ function LoginInput({ onLogin }) {
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$input$2f$input$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
                 name: "email",
                 placeholder: "E-mail",
-                onChange: handleChange,
+                onChange: applyChange,
                 borderColor: "white",
                 _placeholder: {
                     color: "white"
@@ -64,7 +64,7 @@ function LoginInput({ onLogin }) {
                 name: "password",
                 type: "password",
                 placeholder: "Senha",
-                onChange: handleChange,
+                onChange: applyChange,
                 borderColor: "white",
                 _placeholder: {
                     color: "white"
@@ -75,12 +75,21 @@ function LoginInput({ onLogin }) {
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$button$2f$button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                onClick: handleLogin,
+                colorScheme: "gray",
+                variant: "link",
+                children: "Esqueci minha senha"
+            }, void 0, false, {
+                fileName: "[project]/src/components/LoginInput.jsx",
+                lineNumber: 46,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$button$2f$button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                onClick: applyLogin,
                 colorScheme: "blue",
                 children: "Entrar"
             }, void 0, false, {
                 fileName: "[project]/src/components/LoginInput.jsx",
-                lineNumber: 46,
+                lineNumber: 52,
                 columnNumber: 7
             }, this)
         ]
@@ -500,7 +509,7 @@ function LoginPc() {
                                     onRegisterSuccess: registerForm
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/Login/page.js",
-                                    lineNumber: 53,
+                                    lineNumber: 52,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$button$2f$button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -511,7 +520,7 @@ function LoginPc() {
                                     children: "Voltar ao Login"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/Login/page.js",
-                                    lineNumber: 54,
+                                    lineNumber: 53,
                                     columnNumber: 15
                                 }, this)
                             ]
@@ -520,12 +529,12 @@ function LoginPc() {
                                     onLogin: loginUsuario
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/Login/page.js",
-                                    lineNumber: 66,
+                                    lineNumber: 65,
                                     columnNumber: 17
                                 }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/Login/page.js",
-                            lineNumber: 64,
+                            lineNumber: 63,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$button$2f$button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
