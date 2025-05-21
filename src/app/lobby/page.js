@@ -11,11 +11,17 @@ import {
   Button,
   Flex,
   Image,
+  Spinner,
+  Center
 } from "@chakra-ui/react";
 import { LuSquareCheck } from "react-icons/lu";
 import { FaShoppingCart, FaHeart, FaUser, FaSearch } from "react-icons/fa";
 import { IoShirt } from "react-icons/io5";
 import ProductCarousel from "@/components/Carousel";
+import api from "@/utils/axios";
+import ProductCard from "@/components/ProductCard";
+import { BiSolidOffer } from "react-icons/bi";
+
 
 const tiposRoupas = ["Todos", "Camisetas", "Calças", "Tênis", "Acessórios"];
 
@@ -39,21 +45,20 @@ function TabsTrigger({ value, current, onClick, children }) {
   return (
     <Button
       variant={current ? "solid" : "outline"}
-      colorScheme="blue"
       onClick={() => onClick(value)}
       borderRadius="lg"
       fontWeight="bold"
       px={10}
       py={7}
       fontSize="xl"
-      bg={current ? "#1976d2" : "#e3f2fd"}
-      color={current ? "white" : "#1976d2"}
+      style={{ background: "rgba(78, 111, 160, 0.97)" }}
+      color={current ? "rgba(255, 255, 255, 0.97)" : "rgba(148, 175, 211, 0.97)"}
       _hover={{
         bg: current ? "#1565c0" : "#bbdefb",
       }}
       boxShadow="md"
       transition="all 0.2s"
-      minW="140px"
+      minW="140px"  
     >
       {children}
     </Button>
@@ -82,6 +87,8 @@ const tabInicial = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sidebarSection, setSidebarSection] = useState("loja");
   const [tabValue, setTabValue] = useState(tiposRoupas[0]);
+  const [produtos, setProdutos] = useState([]);
+  const [loadingProdutos, setLoadingProdutos] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -90,13 +97,30 @@ const tabInicial = () => {
     }
   }, [router]);
 
+  useEffect(() => {
+    setLoadingProdutos(true);
+    api.get("/products")
+      .then(res => {
+        const data = Array.isArray(res.data) ? res.data : res.data.data || [];
+        setProdutos(data);
+        setLoadingProdutos(false);
+      })
+      .catch(() => setLoadingProdutos(false));
+  }, []);
+
   const tabIndex = tiposRoupas.indexOf(tabValue);
 
+  // Filtro por tipo de roupa (categoria)
+  const produtosFiltrados = tabValue === "Todos"
+    ? produtos
+    : produtos.filter(prod => prod.category?.name === tabValue);
+
   return (
-    <Box minH="100vh" display="flex" flexDirection="column" style={{ background: "rgba(9, 10, 17, 0.97)" }}>
+    <Box minH="100vh" display="flex" flexDirection="column" style={{ background: "rgba(16, 25, 43, 0.97)" }}>
+      {/* Header */}
       <Flex
         w="100%"
-        style={{ background: "rgba(31, 29, 141, 0.97)" }}
+        style={{ background: "rgba(36, 53, 109, 0.97)" }}
         py={2}
         px={8}
         align="center"
@@ -105,35 +129,35 @@ const tabInicial = () => {
         <Flex align="center" gap={2} minW="260px">
           <Image
             w="8%"
-            src="https://www.pngplay.com/wp-content/uploads/13/Jordan-Logo-PNG-Clipart-Background.png"
+            justifyContent={"center"}
+            src="https://sdmntprwestus.oaiusercontent.com/files/00000000-4fec-6230-9c54-6540d21c32d9/raw?se=2025-05-21T22%3A22%3A46Z&sp=r&sv=2024-08-04&sr=b&scid=28e3c5c9-0f14-59b2-91a9-2066715d822b&skoid=b64a43d9-3512-45c2-98b4-dea55d094240&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-21T20%3A19%3A29Z&ske=2025-05-22T20%3A19%3A29Z&sks=b&skv=2024-08-04&sig=JAGWGeWqgBGFGnIspCYvLZ/6Ic5eAmMectZJ94AUFu8%3D"
           />
         </Flex>
-        <Box
-          position="absolute"
-          left="50%"
-          top="50%"
-          transform="translate(-50%, -50%)"
-          maxW="500px"
-          w="100%"
-          zIndex={1}
-        
-        >
-          <Box position="relative">
-            <Input
-              bg="white"
-              placeholder="O que você está procurando?"
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-              pl={10}
-              fontSize="lg"
-              _placeholder={{ color: "gray.500" }}
-            />
-            <Box position="absolute" left={4} top="50%" transform="translateY(-50%)">
-              <FaSearch color="#8000FF" />
-            </Box>
+        <Box position="relative" w="100%" maxW="700px" mx="auto">
+          <Input
+            variant="unstyled"
+            borderRadius="md"
+            border="1px solid #cfd8dc"
+            placeholder="O que você está procurando?"
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            pl={12}
+            fontSize="lg"
+            bg="#f7fafd"
+            color="#222"
+            height="44px"
+            _placeholder={{ color: "#90a4ae" }}
+            _focus={{
+              borderColor: "#1976d2",
+              bg: "#f0f4f8",
+              boxShadow: "0 0 0 1.5px #1976d2"
+            }}
+            transition="all 0.2s"
+          />
+          <Box position="absolute" left={4} top="50%" transform="translateY(-50%)">
+            <FaSearch color="#90a4ae" size={18} />
           </Box>
         </Box>
-
         <Flex align="center" gap={6} minW="260px" justify="flex-end" ml="auto">
           <Flex align="center" color="white" cursor="pointer" _hover={{ color: "yellow.300" }}>
             <FaHeart />
@@ -169,9 +193,9 @@ const tabInicial = () => {
         </Flex>
       </Flex>
 
-      {/* Resto da página */}
+      {/* Conteúdo */}
       <Box flex="1" display="flex">
-        {/* Sidebar permanente */}
+        {/* Sidebar */}
         <Box
           w="220px"
           color="white"
@@ -180,7 +204,7 @@ const tabInicial = () => {
           flexDirection="column"
           alignItems="center"
           boxShadow="md"
-          style={{ background: "rgba(44, 44, 44, 0.97)" }}
+          style={{ background: "rgba(36, 41, 65, 0.97)" }}
         >
           <Text fontWeight="bold" fontSize="xl" mb={8}>
             Menu
@@ -228,13 +252,35 @@ const tabInicial = () => {
               <Icon as={LuSquareCheck} mr={2} />
               Configurações
             </Box>
+            <Box
+              as="button"
+              w="100%"
+              textAlign="left"
+              py={2}
+              px={4}
+              borderRadius="md"
+              bg={sidebarSection === "config" ? "blue.600" : "transparent"}
+              _hover={{ bg: "blue.600" }}
+              onClick={() => setSidebarSection("config")}
+            >
+              <Icon as={BiSolidOffer} mr={2} />
+              Ofertas
+            </Box>
           </VStack>
         </Box>
 
-        {/* Conteúdo principal */}
-        <Box flex="3" p={5} display="flex" flexDirection="column" alignItems="center">
+        {/* Conteúdo principal rolável */}
+        <Box
+          flex="3"
+          p={5}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          height="calc(100vh - 64px)" // ajuste 64px para a altura do header
+          overflowY="auto"
+        >
           {sidebarSection === "loja" && (
-            <Box flex="1" p={8} display="flex" flexDirection="column" alignItems="center">
+            <Box flex="1" p={8} display="flex" flexDirection="column" alignItems="center" w="100%">
               <TabsRoot value={tabValue} onValueChange={setTabValue}>
                 {({ value, onValueChange }) => (
                   <>
@@ -253,7 +299,22 @@ const tabInicial = () => {
                     <TabsIndicator index={tabIndex} total={tiposRoupas.length} />
                     {tiposRoupas.map((tipo) => (
                       <TabsContent key={tipo} value={tipo} current={value === tipo}>
+                        {/* Carrossel */}
                         <ProductCarousel tipoSelecionado={tipo} />
+                        {/* Cards de produtos */}
+                        {loadingProdutos ? (
+                          <Center py={10}><Spinner size="lg" color="yellow.300" /></Center>
+                        ) : (
+                            <Flex wrap="wrap" gap={6} justify="center" mt={8}>
+                              {produtosFiltrados.length === 0 ? (
+                                <Text color="white" fontSize="lg">Nenhum produto encontrado.</Text>
+                              ) : (
+                                produtosFiltrados.map(prod => (
+                                  <ProductCard key={prod.id} prod={prod} />
+                                ))
+                              )}
+                            </Flex>
+                        )}
                       </TabsContent>
                     ))}
                   </>
@@ -263,12 +324,12 @@ const tabInicial = () => {
           )}
           {sidebarSection === "carrinho" && (
             <Text color="white" fontSize="2xl" mt={10}>
-              Carrinho principal selecionado!
+              -
             </Text>
           )}
           {sidebarSection === "config" && (
             <Text color="white" fontSize="2xl" mt={10}>
-              Configurações selecionado!
+              -
             </Text>
           )}
         </Box>

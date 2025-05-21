@@ -8,24 +8,44 @@ var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_
 __turbopack_context__.s({
     "default": (()=>ProductCarousel)
 });
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$slick$2f$lib$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-slick/lib/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$box$2f$box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@chakra-ui/react/dist/esm/components/box/box.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$image$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@chakra-ui/react/dist/esm/components/image/image.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$center$2f$center$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@chakra-ui/react/dist/esm/components/center/center.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$spinner$2f$spinner$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@chakra-ui/react/dist/esm/components/spinner/spinner.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$typography$2f$text$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@chakra-ui/react/dist/esm/components/typography/text.js [app-client] (ecmascript)");
+;
+var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
 ;
 ;
-const images = [
-    "https://picsum.photos/400/400?random=1",
-    "https://picsum.photos/400/400?random=2",
-    "https://picsum.photos/400/400?random=3",
-    "https://picsum.photos/400/400?random=4",
-    "https://picsum.photos/400/400?random=5"
-];
 function ProductCarousel() {
+    _s();
+    const [images, setImages] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "ProductCarousel.useEffect": ()=>{
+            fetch("/products").then({
+                "ProductCarousel.useEffect": (res)=>res.json()
+            }["ProductCarousel.useEffect"]).then({
+                "ProductCarousel.useEffect": (data)=>{
+                    // Se a resposta for um objeto com 'data', ajuste para data.data
+                    const produtos = Array.isArray(data) ? data : data.data || [];
+                    setImages(produtos.map({
+                        "ProductCarousel.useEffect": (prod)=>prod.image
+                    }["ProductCarousel.useEffect"]));
+                    setLoading(false);
+                }
+            }["ProductCarousel.useEffect"]).catch({
+                "ProductCarousel.useEffect": ()=>setLoading(false)
+            }["ProductCarousel.useEffect"]);
+        }
+    }["ProductCarousel.useEffect"], []);
     const settings = {
         dots: true,
         infinite: true,
@@ -43,6 +63,38 @@ function ProductCarousel() {
             }
         ]
     };
+    if (loading) {
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$center$2f$center$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Center"], {
+            py: 10,
+            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$spinner$2f$spinner$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Spinner"], {
+                size: "xl"
+            }, void 0, false, {
+                fileName: "[project]/src/components/Carousel.jsx",
+                lineNumber: 42,
+                columnNumber: 28
+            }, this)
+        }, void 0, false, {
+            fileName: "[project]/src/components/Carousel.jsx",
+            lineNumber: 42,
+            columnNumber: 12
+        }, this);
+    }
+    if (!images.length) {
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$center$2f$center$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Center"], {
+            py: 10,
+            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$typography$2f$text$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Text"], {
+                children: "Nenhuma imagem encontrada."
+            }, void 0, false, {
+                fileName: "[project]/src/components/Carousel.jsx",
+                lineNumber: 46,
+                columnNumber: 28
+            }, this)
+        }, void 0, false, {
+            fileName: "[project]/src/components/Carousel.jsx",
+            lineNumber: 46,
+            columnNumber: 12
+        }, this);
+    }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$box$2f$box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Box"], {
         maxW: "900px",
         mx: "auto",
@@ -51,33 +103,34 @@ function ProductCarousel() {
             children: images.map((src, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$center$2f$center$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Center"], {
                     py: 6,
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$image$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Image"], {
-                        src: src,
+                        src: src.startsWith("/") ? `${__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].env.NEXT_PUBLIC_API_URL || ""}${src}` : src,
                         alt: `Produto ${idx + 1}`,
                         boxSize: "180px",
                         objectFit: "cover",
-                        borderRadius: " 100%",
+                        borderRadius: "100%",
                         boxShadow: "lg"
                     }, void 0, false, {
                         fileName: "[project]/src/components/Carousel.jsx",
-                        lineNumber: 38,
-                        columnNumber: 17
+                        lineNumber: 54,
+                        columnNumber: 13
                     }, this)
                 }, idx, false, {
                     fileName: "[project]/src/components/Carousel.jsx",
-                    lineNumber: 37,
+                    lineNumber: 53,
                     columnNumber: 11
                 }, this))
         }, void 0, false, {
             fileName: "[project]/src/components/Carousel.jsx",
-            lineNumber: 35,
+            lineNumber: 51,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/Carousel.jsx",
-        lineNumber: 34,
+        lineNumber: 50,
         columnNumber: 5
     }, this);
 }
+_s(ProductCarousel, "QBslGb/yTBcjcjShOOciEvHlA24=");
 _c = ProductCarousel;
 var _c;
 __turbopack_context__.k.register(_c, "ProductCarousel");
@@ -156,15 +209,16 @@ _c1 = TabsList;
 function TabsTrigger({ value, current, onClick, children }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$button$2f$button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
         variant: current ? "solid" : "outline",
-        colorScheme: "blue",
         onClick: ()=>onClick(value),
         borderRadius: "lg",
         fontWeight: "bold",
         px: 10,
         py: 7,
         fontSize: "xl",
-        bg: current ? "#1976d2" : "#e3f2fd",
-        color: current ? "white" : "#1976d2",
+        style: {
+            background: "rgba(78, 111, 160, 0.97)"
+        },
+        color: current ? "rgba(255, 255, 255, 0.97)" : "rgba(148, 175, 211, 0.97)",
         _hover: {
             bg: current ? "#1565c0" : "#bbdefb"
         },
@@ -229,13 +283,13 @@ const tabInicial = ()=>{
         display: "flex",
         flexDirection: "column",
         style: {
-            background: "rgba(9, 10, 17, 0.97)"
+            background: "rgba(16, 25, 43, 0.97)"
         },
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$flex$2f$flex$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Flex"], {
                 w: "100%",
                 style: {
-                    background: "rgba(31, 29, 141, 0.97)"
+                    background: "rgba(35, 59, 139, 0.97)"
                 },
                 py: 2,
                 px: 8,
@@ -260,55 +314,57 @@ const tabInicial = ()=>{
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$box$2f$box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Box"], {
-                        position: "absolute",
-                        left: "50%",
-                        top: "50%",
-                        transform: "translate(-50%, -50%)",
-                        maxW: "500px",
+                        position: "relative",
                         w: "100%",
-                        zIndex: 1,
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$box$2f$box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Box"], {
-                            position: "relative",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$input$2f$input$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
-                                    bg: "white",
-                                    placeholder: "O que você está procurando?",
-                                    value: searchTerm,
-                                    onChange: (e)=>setSearchTerm(e.target.value),
-                                    pl: 10,
-                                    fontSize: "lg",
-                                    _placeholder: {
-                                        color: "gray.500"
-                                    }
+                        maxW: "700px",
+                        mx: "auto",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$input$2f$input$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                variant: "unstyled",
+                                borderRadius: "md",
+                                border: "1px solid #cfd8dc",
+                                placeholder: "O que você está procurando?",
+                                value: searchTerm,
+                                onChange: (e)=>setSearchTerm(e.target.value),
+                                pl: 12,
+                                fontSize: "lg",
+                                bg: "#f7fafd",
+                                color: "#222",
+                                height: "44px",
+                                _placeholder: {
+                                    color: "#90a4ae"
+                                },
+                                _focus: {
+                                    borderColor: "#1976d2",
+                                    bg: "#f0f4f8",
+                                    boxShadow: "0 0 0 1.5px #1976d2"
+                                },
+                                transition: "all 0.2s"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/lobby/page.js",
+                                lineNumber: 112,
+                                columnNumber: 3
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$box$2f$box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Box"], {
+                                position: "absolute",
+                                left: 4,
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["FaSearch"], {
+                                    color: "#90a4ae",
+                                    size: 18
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/lobby/page.js",
-                                    lineNumber: 122,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$box$2f$box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Box"], {
-                                    position: "absolute",
-                                    left: 4,
-                                    top: "50%",
-                                    transform: "translateY(-50%)",
-                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["FaSearch"], {
-                                        color: "#8000FF"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/app/lobby/page.js",
-                                        lineNumber: 132,
-                                        columnNumber: 15
-                                    }, this)
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/lobby/page.js",
-                                    lineNumber: 131,
-                                    columnNumber: 13
+                                    lineNumber: 133,
+                                    columnNumber: 5
                                 }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/src/app/lobby/page.js",
-                            lineNumber: 121,
-                            columnNumber: 11
-                        }, this)
-                    }, void 0, false, {
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/lobby/page.js",
+                                lineNumber: 132,
+                                columnNumber: 3
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/src/app/lobby/page.js",
                         lineNumber: 111,
                         columnNumber: 9
@@ -431,7 +487,7 @@ const tabInicial = ()=>{
                         alignItems: "center",
                         boxShadow: "md",
                         style: {
-                            background: "rgba(44, 44, 44, 0.97)"
+                            background: "rgba(36, 41, 65, 0.97)"
                         },
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$2f$dist$2f$esm$2f$components$2f$typography$2f$text$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Text"], {
