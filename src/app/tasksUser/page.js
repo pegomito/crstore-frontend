@@ -161,7 +161,12 @@ export default function TasksUsuario() {
   };
 
   return (
-    <Box p={8} borderRadius="md" boxShadow="lg">
+    <Box minH="100vh"
+      w="100vw"
+      p={8}
+      boxShadow="lg"
+      style={{ background: "rgba(15, 37, 65, 0.97)" }}>
+        
       <Flex justifyContent="center">
         <Heading mb={12} gapX={2} display="flex">
           CRUD Usuários <MdMoreTime />

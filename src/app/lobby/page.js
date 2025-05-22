@@ -12,7 +12,8 @@ import {
   Flex,
   Image,
   Spinner,
-  Center
+  Center,
+  HStack
 } from "@chakra-ui/react";
 import { LuSquareCheck } from "react-icons/lu";
 import { FaShoppingCart, FaHeart, FaUser, FaSearch } from "react-icons/fa";
@@ -20,12 +21,20 @@ import { IoShirt } from "react-icons/io5";
 import ProductCarousel from "@/components/Carousel";
 import api from "@/utils/axios";
 import ProductCard from "@/components/ProductCard";
-import { BiSolidOffer } from "react-icons/bi";
+import { BiSolidOffer, BiSolidCategoryAlt } from "react-icons/bi";  
+import { RiAdminFill } from "react-icons/ri";
+import { CiUser } from "react-icons/ci";
+import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 
 
-const tiposRoupas = ["Todos", "Camisetas", "Calças", "Tênis", "Acessórios"];
+const tiposRoupas = [
+  { id: null, name: "Todos" },
+  { id: 1, name: "Camisetas" },
+  { id: 2, name: "Calças" },
+  { id: 3, name: "Tênis" },
+  { id: 4, name: "Acessórios" }
+];
 
-// Componentes auxiliares para Tabs no padrão solicitado
 function TabsRoot({ value, onValueChange, children }) {
   return <Box>{children({ value, onValueChange })}</Box>;
 }
@@ -51,8 +60,8 @@ function TabsTrigger({ value, current, onClick, children }) {
       px={10}
       py={7}
       fontSize="xl"
-      style={{ background: "rgba(78, 111, 160, 0.97)" }}
-      color={current ? "rgba(255, 255, 255, 0.97)" : "rgba(148, 175, 211, 0.97)"}
+      style={{ background: "rgba(27, 52, 97, 0.97)" }}
+      color={current ? "rgba(255, 255, 255, 0.97)" : "rgba(94, 135, 161, 0.97)"}
       _hover={{
         bg: current ? "#1565c0" : "#bbdefb",
       }}
@@ -62,20 +71,6 @@ function TabsTrigger({ value, current, onClick, children }) {
     >
       {children}
     </Button>
-  );
-}
-function TabsIndicator({ index, total }) {
-  return (
-    <Box
-      mt={1}
-      h="4px"
-      w={`${100 / total}%`}
-      bg="blue.500"
-      borderRadius="full"
-      position="relative"
-      left={`${(100 / total) * index}%`}
-      transition="left 0.2s"
-    />
   );
 }
 function TabsContent({ value, current, children }) {
@@ -108,16 +103,24 @@ const tabInicial = () => {
       .catch(() => setLoadingProdutos(false));
   }, []);
 
-  const tabIndex = tiposRoupas.indexOf(tabValue);
+ 
+  const produtosFiltrados = produtos.filter(prod => {
 
-  // Filtro por tipo de roupa (categoria)
-  const produtosFiltrados = tabValue === "Todos"
-    ? produtos
-    : produtos.filter(prod => prod.category?.name === tabValue);
+    const categoriaOk =
+      tabValue.id === null ||
+      prod.category === tabValue.id ||
+      prod.category?.id === tabValue.id;
+
+    const buscaOk =
+      !searchTerm ||
+      prod.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      prod.description?.toLowerCase().includes(searchTerm.toLowerCase());
+
+    return categoriaOk && buscaOk;
+  });
 
   return (
     <Box minH="100vh" display="flex" flexDirection="column" style={{ background: "rgba(16, 25, 43, 0.97)" }}>
-      {/* Header */}
       <Flex
         w="100%"
         style={{ background: "rgba(36, 53, 109, 0.97)" }}
@@ -126,13 +129,16 @@ const tabInicial = () => {
         align="center"
         position="relative"
       >   
-        <Flex align="center" gap={2} minW="260px">
+      
           <Image
+            maxW={"50%"}
             w="8%"
             justifyContent={"center"}
-            src="https://sdmntprwestus.oaiusercontent.com/files/00000000-4fec-6230-9c54-6540d21c32d9/raw?se=2025-05-21T22%3A22%3A46Z&sp=r&sv=2024-08-04&sr=b&scid=28e3c5c9-0f14-59b2-91a9-2066715d822b&skoid=b64a43d9-3512-45c2-98b4-dea55d094240&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-21T20%3A19%3A29Z&ske=2025-05-22T20%3A19%3A29Z&sks=b&skv=2024-08-04&sig=JAGWGeWqgBGFGnIspCYvLZ/6Ic5eAmMectZJ94AUFu8%3D"
+            src="https://sdmntprsouthcentralus.oaiusercontent.com/files/00000000-a1d8-61f7-8811-8cdce9d52ee1/raw?se=2025-05-22T21%3A51%3A01Z&sp=r&sv=2024-08-04&sr=b&scid=5518ea66-fb7d-55dd-8408-bb29e347682f&skoid=5cab1ff4-c20d-41dc-babb-df0c2cc21dd4&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-22T11%3A04%3A39Z&ske=2025-05-23T11%3A04%3A39Z&sks=b&skv=2024-08-04&sig=xzy1Pr2of4cM54w9MAO/82O1tpSKExNsxkTpbtubwPE%3D"
+             cursor="pointer"
+             onClick={() => router.refresh()}
           />
-        </Flex>
+       
         <Box position="relative" w="100%" maxW="700px" mx="auto">
           <Input
             variant="unstyled"
@@ -170,6 +176,7 @@ const tabInicial = () => {
             color="white"
             _hover={{ bg: "whiteAlpha.300" }}
             borderRadius="full"
+            onClick={() => router.push("/Login")}
           >
             Entrar
           </Button>
@@ -177,25 +184,12 @@ const tabInicial = () => {
             <FaShoppingCart size={22} />
             <Box
               position="absolute"
-              top="-8px"
-              right="-10px"
-              bg="yellow.300"
-              color="black"
-              fontSize="xs"
-              fontWeight="bold"
-              borderRadius="full"
-              px={2}
-              py={0.5}
             >
-              0
             </Box>
           </Box>
         </Flex>
       </Flex>
-
-      {/* Conteúdo */}
       <Box flex="1" display="flex">
-        {/* Sidebar */}
         <Box
           w="220px"
           color="white"
@@ -259,24 +253,51 @@ const tabInicial = () => {
               py={2}
               px={4}
               borderRadius="md"
-              bg={sidebarSection === "config" ? "blue.600" : "transparent"}
+              bg={sidebarSection === "ofertas" ? "blue.600" : "transparent"}
               _hover={{ bg: "blue.600" }}
-              onClick={() => setSidebarSection("config")}
+              onClick={() => setSidebarSection("ofertas")}
             >
               <Icon as={BiSolidOffer} mr={2} />
               Ofertas
             </Box>
+            <Box
+              as="button"
+              w="100%"
+              textAlign="left"
+              py={2}
+              px={4}
+              borderRadius="md"
+              bg={sidebarSection === "explorar" ? "blue.600" : "transparent"}
+              _hover={{ bg: "blue.600" }}
+              onClick={() => setSidebarSection("explorar")}
+            >
+              <Icon as={FaSearch } mr={2} />
+              Explorar
+            </Box>
+            <Box
+              as="button"
+              w="100%"
+              textAlign="left"
+              py={2}
+              px={4}
+              borderRadius="md"
+              bg={sidebarSection === "admin" ? "blue.600" : "transparent"}
+              _hover={{ bg: "blue.600" }}
+              onClick={() => setSidebarSection("admin")}
+            >
+              <Icon as={RiAdminFill } mr={2} />
+             Administração
+            </Box>
           </VStack>
         </Box>
 
-        {/* Conteúdo principal rolável */}
         <Box
           flex="3"
           p={5}
           display="flex"
           flexDirection="column"
           alignItems="center"
-          height="calc(100vh - 64px)" // ajuste 64px para a altura do header
+          height="calc(100vh - 64px)" 
           overflowY="auto"
         >
           {sidebarSection === "loja" && (
@@ -287,36 +308,31 @@ const tabInicial = () => {
                     <TabsList>
                       {tiposRoupas.map((tipo, idx) => (
                         <TabsTrigger
-                          key={tipo}
+                          key={tipo.id ?? "todos"}
                           value={tipo}
-                          current={value === tipo}
-                          onClick={onValueChange}
+                          current={tabValue.id === tipo.id}
+                          onClick={setTabValue}
                         >
-                          {tipo}
+                          {tipo.name}
                         </TabsTrigger>
                       ))}
                     </TabsList>
-                    <TabsIndicator index={tabIndex} total={tiposRoupas.length} />
-                    {tiposRoupas.map((tipo) => (
-                      <TabsContent key={tipo} value={tipo} current={value === tipo}>
-                        {/* Carrossel */}
-                        <ProductCarousel tipoSelecionado={tipo} />
-                        {/* Cards de produtos */}
-                        {loadingProdutos ? (
-                          <Center py={10}><Spinner size="lg" color="yellow.300" /></Center>
-                        ) : (
-                            <Flex wrap="wrap" gap={6} justify="center" mt={8}>
-                              {produtosFiltrados.length === 0 ? (
-                                <Text color="white" fontSize="lg">Nenhum produto encontrado.</Text>
-                              ) : (
-                                produtosFiltrados.map(prod => (
-                                  <ProductCard key={prod.id} prod={prod} />
-                                ))
-                              )}
-                            </Flex>
-                        )}
-                      </TabsContent>
-                    ))}
+                    <TabsContent value={tabValue} current={true}>
+                      <ProductCarousel produtos={produtosFiltrados} />
+                      {loadingProdutos ? (
+                        <Center py={10}><Spinner size="lg" color="yellow.300" /></Center>
+                      ) : (
+                        <Flex wrap="wrap" gap={6} justify="center" mt={8}>
+                          {produtosFiltrados.length === 0 ? (
+                            <Text color="white" fontSize="lg">Nenhum produto encontrado.</Text>
+                          ) : (
+                            produtosFiltrados.map(prod => (
+                              <ProductCard key={prod.id} prod={prod} />
+                            ))
+                          )}
+                        </Flex>
+                      )}
+                    </TabsContent>
                   </>
                 )}
               </TabsRoot>
@@ -331,6 +347,95 @@ const tabInicial = () => {
             <Text color="white" fontSize="2xl" mt={10}>
               -
             </Text>
+          )}
+          {sidebarSection === "ofertas" && (
+            <Text color="white" fontSize="2xl" mt={10}>
+              -
+            </Text>
+          )}
+          {sidebarSection === "explorar" && (
+            <Text color="white" fontSize="2xl" mt={10}>
+              -
+            </Text>
+          )}
+          {sidebarSection === "admin" && (
+            <Box
+              flex="1"
+            >
+            <VStack spacing={4} align="center" mb={6}>
+              <Text color="white" fontSize="2xl" mt={10} textAlign="center" fontWeight="bold">
+                Bem-Vindo à área de administração!
+              </Text>
+              <Flex wrap="wrap" gap={4}  justify="center">
+              <Button
+                mt={10}
+                onClick={() => router.push("/tasksUser")}
+                p={8}
+              >
+                Gerenciar Usuários
+                <CiUser />
+              </Button>
+              <Button
+                mt={10}
+                onClick={() => router.push("/tasksProducts")}
+                p={8}
+              >
+                Gerenciar Produtos
+                <MdOutlineProductionQuantityLimits />
+              </Button>
+              <Button
+                mt={10}
+                onClick={() => router.push("/tasksCategories")}
+                p={8}
+              >
+                Gerenciar Categorias
+                <BiSolidCategoryAlt />
+              </Button>
+              <Button
+                mt={10}
+                onClick={() => router.push("/tasksPayment")}
+                p={8}
+              >
+                Gerenciar Métodos de Pagamento
+                <MdOutlineProductionQuantityLimits />
+              </Button>
+              <Button
+                mt={10}
+                onClick={() => router.push("/tasksOrder_Products")}
+                p={8}
+              >
+                Gerenciar  Pedidos/Produtos
+                <MdOutlineProductionQuantityLimits />
+              </Button>
+              <Button
+                mt={10}
+                onClick={() => router.push("/tasksOrder")}
+                p={8}
+              >
+                Gerenciar Pedidos
+                <MdOutlineProductionQuantityLimits />
+              </Button>
+              <Button
+                mt={10}
+                onClick={() => router.push("/tasksCoupons")}
+                p={8}
+              >
+                Gerenciar Cupoms
+                <MdOutlineProductionQuantityLimits />
+              </Button>
+              <Button
+                mt={10}
+                onClick={() => router.push("/tasksAdress")}
+                p={8}
+              >
+                Gerenciar Endereços
+                <MdOutlineProductionQuantityLimits />
+              </Button>
+
+
+              </Flex>
+            </VStack>
+          </Box>
           )}
         </Box>
       </Box>
