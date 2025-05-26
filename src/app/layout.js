@@ -6,10 +6,12 @@ export default function RootLayout({ children }) {
   return (
     <html suppressHydrationWarning>
       <body>
+         
         <Provider>
           {children}
           <Toaster />
-        </Provider>        
+        </Provider>
+            
       </body>
     </html>
   )

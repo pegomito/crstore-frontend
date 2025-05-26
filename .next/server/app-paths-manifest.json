@@ -1,17 +1,7 @@
 {
   "/Login/page": "app/Login/page.js",
   "/_not-found/page": "app/_not-found/page.js",
-  "/admin/page": "app/admin/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/lobby/page": "app/lobby/page.js",
-  "/novo/page": "app/novo/page.js",
-  "/product/[id]/page": "app/product/[id]/page.js",
-  "/tasksAdress/page": "app/tasksAdress/page.js",
-  "/tasksCategories/page": "app/tasksCategories/page.js",
-  "/tasksCoupons/page": "app/tasksCoupons/page.js",
-  "/tasksOrder/page": "app/tasksOrder/page.js",
-  "/tasksOrder_Products/page": "app/tasksOrder_Products/page.js",
-  "/tasksPayment/page": "app/tasksPayment/page.js",
-  "/tasksProducts/page": "app/tasksProducts/page.js",
-  "/tasksUser/page": "app/tasksUser/page.js"
+  "/product/[id]/page": "app/product/[id]/page.js"
 }

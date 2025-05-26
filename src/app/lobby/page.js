@@ -13,7 +13,6 @@ import {
   Image,
   Spinner,
   Center,
-  HStack
 } from "@chakra-ui/react";
 import { LuSquareCheck } from "react-icons/lu";
 import { FaShoppingCart, FaHeart, FaUser, FaSearch } from "react-icons/fa";
@@ -25,7 +24,7 @@ import { BiSolidOffer, BiSolidCategoryAlt } from "react-icons/bi";
 import { RiAdminFill } from "react-icons/ri";
 import { CiUser } from "react-icons/ci";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
-
+import Cart from "@/components/Cart";
 
 const tiposRoupas = [
   { id: null, name: "Todos" },
@@ -85,6 +84,11 @@ const tabInicial = () => {
   const [produtos, setProdutos] = useState([]);
   const [loadingProdutos, setLoadingProdutos] = useState(true);
 
+  // Endereços
+  const [enderecos, setEnderecos] = useState([]);
+  const [novoEndereco, setNovoEndereco] = useState("");
+  const [loadingEndereco, setLoadingEndereco] = useState(false);
+
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (!token) {
@@ -103,9 +107,30 @@ const tabInicial = () => {
       .catch(() => setLoadingProdutos(false));
   }, []);
 
- 
-  const produtosFiltrados = produtos.filter(prod => {
+  // Buscar endereços ao abrir a aba
+  useEffect(() => {
+    if (sidebarSection === "adress") {
+      api.get("/adresses").then(res => {
+        setEnderecos(res.data.data || []);
+      });
+    }
+  }, [sidebarSection]);
 
+  // Adicionar endereço (apenas campo street, mas pode expandir para outros campos)
+  const handleAdicionarEndereco = async () => {
+    if (!novoEndereco.trim()) return;
+    setLoadingEndereco(true);
+    try {
+      const res = await api.post("/adresses", { street: novoEndereco });
+      setEnderecos([res.data.data, ...enderecos]);
+      setNovoEndereco("");
+    } catch (err) {
+      alert("Erro ao adicionar endereço");
+    }
+    setLoadingEndereco(false);
+  };
+
+  const produtosFiltrados = produtos.filter(prod => {
     const categoriaOk =
       tabValue.id === null ||
       prod.category === tabValue.id ||
@@ -120,7 +145,19 @@ const tabInicial = () => {
   });
 
   return (
-    <Box minH="100vh" display="flex" flexDirection="column" style={{ background: "rgba(16, 25, 43, 0.97)" }}>
+     <Box
+    minH="100vh"
+    display="flex"
+    flexDirection="column"
+    style={{
+      background: "rgba(255, 255, 255, 0.97)",
+      backgroundImage: "url('https://static.vecteezy.com/ti/vetor-gratis/p1/10407633-fantastico-esportes-design-futurista-fundo-papel-de-parede-gratis-vetor.jpg')",
+      backgroundSize: "cover",
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center",
+    }}
+  >
+    <Box minH="100vh" display="flex" flexDirection="column" style={{ background: "rgba(16, 25, 43, 0.7)" }}>
       <Flex
         w="100%"
         style={{ background: "rgba(36, 53, 109, 0.97)" }}
@@ -129,39 +166,27 @@ const tabInicial = () => {
         align="center"
         position="relative"
       >   
-      
-          <Image
-            maxW={"50%"}
-            w="8%"
-            justifyContent={"center"}
-            src="https://sdmntprsouthcentralus.oaiusercontent.com/files/00000000-a1d8-61f7-8811-8cdce9d52ee1/raw?se=2025-05-22T21%3A51%3A01Z&sp=r&sv=2024-08-04&sr=b&scid=5518ea66-fb7d-55dd-8408-bb29e347682f&skoid=5cab1ff4-c20d-41dc-babb-df0c2cc21dd4&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-22T11%3A04%3A39Z&ske=2025-05-23T11%3A04%3A39Z&sks=b&skv=2024-08-04&sig=xzy1Pr2of4cM54w9MAO/82O1tpSKExNsxkTpbtubwPE%3D"
-             cursor="pointer"
-             onClick={() => router.refresh()}
-          />
-       
+        <Image
+          maxW={"50%"}
+          w="8%"
+          justifyContent={"center"}
+          src="https://sdmntprsouthcentralus.oaiusercontent.com/files/00000000-a1d8-61f7-8811-8cdce9d52ee1/raw?se=2025-05-26T21%3A14%3A34Z&sp=r&sv=2024-08-04&sr=b&scid=c17396b5-f256-51cd-af5f-f412cd94af98&skoid=bbd22fc4-f881-4ea4-b2f3-c12033cf6a8b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-26T07%3A52%3A53Z&ske=2025-05-27T07%3A52%3A53Z&sks=b&skv=2024-08-04&sig=x6W3HmSrXZtWdlIEVr1t9ntw0Klmqgp1s6%2BzqNTYkCM%3D"
+          cursor="pointer"
+          onClick={() => router.refresh()}
+        />
         <Box position="relative" w="100%" maxW="700px" mx="auto">
           <Input
-            variant="unstyled"
-            borderRadius="md"
-            border="1px solid #cfd8dc"
-            placeholder="O que você está procurando?"
+            borderRadius={"full"}
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
             pl={12}
             fontSize="lg"
-            bg="#f7fafd"
-            color="#222"
-            height="44px"
-            _placeholder={{ color: "#90a4ae" }}
-            _focus={{
-              borderColor: "#1976d2",
-              bg: "#f0f4f8",
-              boxShadow: "0 0 0 1.5px #1976d2"
-            }}
-            transition="all 0.2s"
+            placeholder="Buscar produtos..."
+            _placeholder={{ color: "rgba(0, 0, 0, 0.77)" }}
+            style={{ background: "rgba(146, 161, 211, 0.77)" }}
           />
           <Box position="absolute" left={4} top="50%" transform="translateY(-50%)">
-            <FaSearch color="#90a4ae" size={18} />
+            <FaSearch color="black" size={18} />
           </Box>
         </Box>
         <Flex align="center" gap={6} minW="260px" justify="flex-end" ml="auto">
@@ -182,10 +207,7 @@ const tabInicial = () => {
           </Button>
           <Box position="relative" color="white" cursor="pointer">
             <FaShoppingCart size={22} />
-            <Box
-              position="absolute"
-            >
-            </Box>
+            <Box position="absolute"></Box>
           </Box>
         </Flex>
       </Flex>
@@ -223,7 +245,7 @@ const tabInicial = () => {
               w="100%"
               textAlign="left"
               py={2}
-              px={4}
+              px={4}  
               borderRadius="md"
               bg={sidebarSection === "carrinho" ? "blue.600" : "transparent"}
               _hover={{ bg: "blue.600" }}
@@ -231,6 +253,20 @@ const tabInicial = () => {
             >
               <Icon as={FaShoppingCart} mr={2} />
               Carrinho
+            </Box>
+            <Box
+              as="button"
+              w="100%"
+              textAlign="left"
+              py={2}
+              px={4}
+              borderRadius="md"
+              bg={sidebarSection === "adress" ? "blue.600" : "transparent"}
+              _hover={{ bg: "blue.600" }}
+              onClick={() => setSidebarSection("adress")}
+            >
+              <Icon as={RiAdminFill } mr={2} />
+             Endereços
             </Box>
             <Box
               as="button"
@@ -339,9 +375,50 @@ const tabInicial = () => {
             </Box>
           )}
           {sidebarSection === "carrinho" && (
-            <Text color="white" fontSize="2xl" mt={10}>
-              -
-            </Text>
+            <Cart />
+          )}
+          {sidebarSection === "adress" && (
+           <Box flex="1" p={8} display="flex" flexDirection="column" alignItems="center" w="100%">
+        <Text color="blue.300" fontSize="2xl" mb={6} fontWeight="bold">
+          Gerenciar Endereços
+        </Text>
+        <Input
+          placeholder="Digite o nome da rua"
+          mb={4}
+          w="100%"
+          maxW="400px"
+          bg="whiteAlpha.200"
+          color="white"
+          _placeholder={{ color: "whiteAlpha.600" }}
+          value={novoEndereco}
+          onChange={e => setNovoEndereco(e.target.value)}
+        />
+        <Button
+          colorScheme="blue"
+          mb={4}
+          onClick={handleAdicionarEndereco}
+          isLoading={loadingEndereco}
+        >
+          Adicionar Endereço
+        </Button>
+        {enderecos.length === 0 ? (
+          <Text color="white" fontSize="md">Nenhum endereço cadastrado.</Text>
+        ) : (
+          <VStack spacing={4} align="stretch" w="100%" maxW="400px">
+            {enderecos.map((end, idx) => (
+              <Box key={end.id || idx} p={4} bg="whiteAlpha.200" borderRadius="md">
+                <Text color="white" fontWeight="bold">{end.street}</Text>
+                {end.city && end.state && (
+                  <Text color="gray.200" fontSize="sm">{end.city} - {end.state}</Text>
+                )}
+                {end.zipCode && (
+                  <Text color="gray.400" fontSize="sm">CEP: {end.zipCode}</Text>
+                )}
+              </Box>
+            ))}
+          </VStack>
+        )}
+      </Box>
           )}
           {sidebarSection === "config" && (
             <Text color="white" fontSize="2xl" mt={10}>
@@ -358,88 +435,54 @@ const tabInicial = () => {
               -
             </Text>
           )}
+
           {sidebarSection === "admin" && (
-            <Box
-              flex="1"
-            >
-            <VStack spacing={4} align="center" mb={6}>
-              <Text color="white" fontSize="2xl" mt={10} textAlign="center" fontWeight="bold">
-                Bem-Vindo à área de administração!
-              </Text>
-              <Flex wrap="wrap" gap={4}  justify="center">
-              <Button
-                mt={10}
-                onClick={() => router.push("/tasksUser")}
-                p={8}
-              >
-                Gerenciar Usuários
-                <CiUser />
-              </Button>
-              <Button
-                mt={10}
-                onClick={() => router.push("/tasksProducts")}
-                p={8}
-              >
-                Gerenciar Produtos
-                <MdOutlineProductionQuantityLimits />
-              </Button>
-              <Button
-                mt={10}
-                onClick={() => router.push("/tasksCategories")}
-                p={8}
-              >
-                Gerenciar Categorias
-                <BiSolidCategoryAlt />
-              </Button>
-              <Button
-                mt={10}
-                onClick={() => router.push("/tasksPayment")}
-                p={8}
-              >
-                Gerenciar Métodos de Pagamento
-                <MdOutlineProductionQuantityLimits />
-              </Button>
-              <Button
-                mt={10}
-                onClick={() => router.push("/tasksOrder_Products")}
-                p={8}
-              >
-                Gerenciar  Pedidos/Produtos
-                <MdOutlineProductionQuantityLimits />
-              </Button>
-              <Button
-                mt={10}
-                onClick={() => router.push("/tasksOrder")}
-                p={8}
-              >
-                Gerenciar Pedidos
-                <MdOutlineProductionQuantityLimits />
-              </Button>
-              <Button
-                mt={10}
-                onClick={() => router.push("/tasksCoupons")}
-                p={8}
-              >
-                Gerenciar Cupoms
-                <MdOutlineProductionQuantityLimits />
-              </Button>
-              <Button
-                mt={10}
-                onClick={() => router.push("/tasksAdress")}
-                p={8}
-              >
-                Gerenciar Endereços
-                <MdOutlineProductionQuantityLimits />
-              </Button>
-
-
-              </Flex>
-            </VStack>
-          </Box>
+            <Box flex="1">
+              <VStack spacing={4} align="center" mb={6}>
+                <Text color="white" fontSize="2xl" mt={10} textAlign="center" fontWeight="bold">
+                  Bem-Vindo à área de administração!
+                </Text>
+                <Flex wrap="wrap" gap={4}  justify="center">
+                  <Button mt={10} onClick={() => router.push("/tasksUser")} p={8}>
+                    Gerenciar Usuários
+                    <CiUser />
+                  </Button>
+                  <Button mt={10} onClick={() => router.push("/tasksProducts")} p={8}>
+                    Gerenciar Produtos
+                    <MdOutlineProductionQuantityLimits />
+                  </Button>
+                  <Button mt={10} onClick={() => router.push("/tasksCategories")} p={8}>
+                    Gerenciar Categorias
+                    <BiSolidCategoryAlt />
+                  </Button>
+                  <Button mt={10} onClick={() => router.push("/tasksPayment")} p={8}>
+                    Gerenciar Métodos de Pagamento
+                    <MdOutlineProductionQuantityLimits />
+                  </Button>
+                  <Button mt={10} onClick={() => router.push("/tasksOrder_Products")} p={8}>
+                    Gerenciar  Pedidos/Produtos
+                    <MdOutlineProductionQuantityLimits />
+                  </Button>
+                  <Button mt={10} onClick={() => router.push("/tasksOrder")} p={8}>
+                    Gerenciar Pedidos
+                    <MdOutlineProductionQuantityLimits />
+                  </Button>
+                  <Button mt={10} onClick={() => router.push("/tasksCoupons")} p={8}>
+                    Gerenciar Cupoms
+                    <MdOutlineProductionQuantityLimits />
+                  </Button>
+                  <Button mt={10} onClick={() => router.push("/tasksAdress")} p={8}>
+                    Gerenciar Endereços
+                    <MdOutlineProductionQuantityLimits />
+                  </Button>
+                </Flex>
+              </VStack>
+            </Box>
           )}
         </Box>
       </Box>
-    </Box>
+     </Box>
+   </Box>
   );
 };
 

@@ -1,6 +1,8 @@
 import { Card, Image, Text, Button } from "@chakra-ui/react";
 import api from "../utils/axios";
 import Link from "next/link";
+import { addToCart } from "../utils/cart"; 
+import { toaster } from "./ui/toaster";
 
 export default function ProductCard({ prod }) {
   if (!prod) return null;
@@ -30,7 +32,22 @@ export default function ProductCard({ prod }) {
         <Link href={`/product/${prod.id}`}>
           <Button variant="solid" w="100%">Ver de perto</Button>
         </Link>
-        <Button variant="ghost">Adicionar ao carrinho</Button>
+         <Button
+        colorScheme="yellow"
+        mt={2}
+        onClick={() => {
+          addToCart(prod);
+          toaster.create({
+            title: "Produto adicionado ao carrinho",
+            description: `${prod.name} foi adicionado ao seu carrinho.`,
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        }}
+      >
+        Adicionar ao Carrinho
+      </Button>
       </Card.Footer>
     </Card.Root>
   );
