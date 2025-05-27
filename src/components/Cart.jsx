@@ -1,106 +1,76 @@
-'use client';
-import { useState, useEffect } from "react";
-import {
-  Box,
-  Button,
-  VStack,
-  Text,
-  Input,
-  Flex,
- 
-} from "@chakra-ui/react";
-import { toaster } from "./ui/toaster";
+import React, { useState } from "react";
+import { Box, Text, VStack, Flex, Button, Input } from "@chakra-ui/react";
+import { useCarrinho } from "../context/CarrinhoContext";
 
 export default function Cart() {
-  const [cartItems, setCartItems] = useState([]);
-  const [address, setAddress] = useState({
-    zipCode: "",
-    state: "",
-    city: "",
-    street: "",
-    district: "",
-    numberForget: "",
-  });
-  const [loading, setLoading] = useState(false);
+  const { carrinho, limparCarrinho, adicionaFrete } = useCarrinho();
+  const [frete, setFrete] = useState(carrinho.frete);
 
-  useEffect(() => {
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    setCartItems(cart);
-  }, []);
-
-  const handleChange = (e) => {
-    setAddress({ ...address, [e.target.name]: e.target.value });
+  const calculaFrete = (e) => {
+    const valor = Number(e.target.value);
+    setFrete(valor);
+    adicionaFrete(valor);
   };
 
-  const handleAddressSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  const fimCompra = () => {
     try {
-      await api.post("/adresses", address);
-      
-      setAddress({
-        zipCode: "",
-        state: "",
-        city: "",
-        street: "",
-        district: "",
-        numberForget: "",
-      });
-      localStorage.removeItem("cart");
-      setCartItems([]);
-      toaster.create({
-        title: "Erro ao cadastrar endereço",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      const resumo = carrinho.finalizaCompra();
+      alert(
+        `Compra finalizada!\nSubtotal: R$ ${resumo.subtotal.toFixed(
+          2
+        )}\nFrete: R$ ${resumo.frete.toFixed(2)}\nTotal: R$ ${resumo.total.toFixed(2)}`
+      );
+      limparCarrinho();
+      setFrete(0);
     } catch (err) {
-      alert("Erro ao cadastrar endereço");
-    } finally {
-      setLoading(false);
+      alert(err.message);
     }
   };
-
-  const total = cartItems.reduce((sum, item) => sum + Number(item.price), 0);
 
   return (
     <Box w="100%" maxW="500px" mx="auto" mt={8} p={6} bg="whiteAlpha.100" borderRadius="lg" boxShadow="md">
       <Text fontWeight="bold" fontSize="2xl" mb={4} color="white">
         Carrinho de Compras
       </Text>
-      {cartItems.length === 0 ? (
+      {carrinho.itens.length === 0 ? (
         <Text color="white" textAlign="center">Nenhum item no carrinho.</Text>
       ) : (
         <VStack align="stretch" spacing={4}>
-          {cartItems.map((item, idx) => (
+          {carrinho.itens.map((item, idx) => (
             <Flex key={idx} justify="space-between" align="center" p={3} bg="whiteAlpha.200" borderRadius="md">
               <Box>
-                <Text fontWeight="bold" color="white">{item.name}</Text>
-                <Text color="gray.200" fontSize="sm">{item.description}</Text>
+                <Text fontWeight="bold" color="white">{item.nome}</Text>
+                <Text color="gray.200" fontSize="sm">Qtd: {item.quantidade}</Text>
               </Box>
-              <Text color="blue.300" fontWeight="bold">R$ {Number(item.price).toFixed(2)}</Text>
+              <Text color="blue.300" fontWeight="bold">
+                R$ {item.pegaValorTotalItem().toFixed(2)}
+              </Text>
             </Flex>
           ))}
           <Flex justify="space-between" align="center" mt={2}>
-            <Text fontWeight="bold" color="white">Total:</Text>
-            <Text fontWeight="bold" color="white.300">R$ {total.toFixed(2)}</Text>
+            <Text fontWeight="bold" color="white">Subtotal:</Text>
+            <Text fontWeight="bold" color="white.300">R$ {carrinho.subtotal.toFixed(2)}</Text>
           </Flex>
-        </VStack>
-      )}
-
-      {cartItems.length > 0 && (
-        <Box as="form" onSubmit={handleAddressSubmit} mt={8}>
-          <Text fontWeight="bold" mb={2} color="white">Endereço para Entrega</Text>
-          <Input placeholder="CEP" name="zipCode" value={address.zipCode} onChange={handleChange} required mb={2} />
-          <Input placeholder="Estado" name="state" value={address.state} onChange={handleChange} required mb={2} />
-          <Input placeholder="Cidade" name="city" value={address.city} onChange={handleChange} required mb={2} />
-          <Input placeholder="Rua" name="street" value={address.street} onChange={handleChange} required mb={2} />
-          <Input placeholder="Bairro" name="district" value={address.district} onChange={handleChange} required mb={2} />
-          <Input placeholder="Complemento" name="numberForget" value={address.numberForget} onChange={handleChange} mb={2} />
-          <Button type="submit" colorScheme="green" mt={2} w="100%" isLoading={loading}>
+          <Flex justify="space-between" align="center">
+            <Text fontWeight="bold" color="white">Frete:</Text>
+            <Input
+              type="number"
+              value={frete}
+              onChange={calculaFrete}
+              w="100px"
+              bg="whiteAlpha.200"
+              color="white"
+              size="sm"
+            />
+          </Flex>
+          <Flex justify="space-between" align="center">
+            <Text fontWeight="bold" color="white">Total:</Text>
+            <Text fontWeight="bold" color="white.300">R$ {carrinho.total.toFixed(2)}</Text>
+          </Flex>
+          <Button colorScheme="green" onClick={fimCompra}>
             Finalizar Compra
           </Button>
-        </Box>
+        </VStack>
       )}
     </Box>
   );

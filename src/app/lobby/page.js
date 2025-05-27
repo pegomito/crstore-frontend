@@ -10,7 +10,6 @@ import {
   Input,
   Button,
   Flex,
-  Image,
   Spinner,
   Center,
 } from "@chakra-ui/react";
@@ -25,6 +24,8 @@ import { RiAdminFill } from "react-icons/ri";
 import { CiUser } from "react-icons/ci";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 import Cart from "@/components/Cart";
+import Adress from "@/components/Adress";
+import NextImage from "next/image";
 
 const tiposRoupas = [
   { id: null, name: "Todos" },
@@ -83,17 +84,26 @@ const tabInicial = () => {
   const [tabValue, setTabValue] = useState(tiposRoupas[0]);
   const [produtos, setProdutos] = useState([]);
   const [loadingProdutos, setLoadingProdutos] = useState(true);
+  const [user, setUser] = useState(null);
 
-  // Endereços
-  const [enderecos, setEnderecos] = useState([]);
-  const [novoEndereco, setNovoEndereco] = useState("");
-  const [loadingEndereco, setLoadingEndereco] = useState(false);
-
+  // Verificação de login
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (!token) {
       router.replace("/Login");
+      return;
     }
+    // Validação opcional no backend
+    api.get("/users/token", {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(res => {
+        setUser(res.data.response); // dados do usuário
+      })
+      .catch(() => {
+        localStorage.removeItem("authToken");
+        router.replace("/Login");
+      });
   }, [router]);
 
   useEffect(() => {
@@ -106,29 +116,6 @@ const tabInicial = () => {
       })
       .catch(() => setLoadingProdutos(false));
   }, []);
-
-  // Buscar endereços ao abrir a aba
-  useEffect(() => {
-    if (sidebarSection === "adress") {
-      api.get("/adresses").then(res => {
-        setEnderecos(res.data.data || []);
-      });
-    }
-  }, [sidebarSection]);
-
-  // Adicionar endereço (apenas campo street, mas pode expandir para outros campos)
-  const handleAdicionarEndereco = async () => {
-    if (!novoEndereco.trim()) return;
-    setLoadingEndereco(true);
-    try {
-      const res = await api.post("/adresses", { street: novoEndereco });
-      setEnderecos([res.data.data, ...enderecos]);
-      setNovoEndereco("");
-    } catch (err) {
-      alert("Erro ao adicionar endereço");
-    }
-    setLoadingEndereco(false);
-  };
 
   const produtosFiltrados = produtos.filter(prod => {
     const categoriaOk =
@@ -146,17 +133,24 @@ const tabInicial = () => {
 
   return (
      <Box
-    minH="100vh"
-    display="flex"
-    flexDirection="column"
-    style={{
-      background: "rgba(255, 255, 255, 0.97)",
-      backgroundImage: "url('https://static.vecteezy.com/ti/vetor-gratis/p1/10407633-fantastico-esportes-design-futurista-fundo-papel-de-parede-gratis-vetor.jpg')",
-      backgroundSize: "cover",
-      backgroundRepeat: "no-repeat",
-      backgroundPosition: "center",
-    }}
-  >
+  minH="100vh"
+  display="flex"
+  flexDirection="column"
+  style={{
+    background: "rgba(0, 0, 0, 0.97)",
+    backgroundImage: `
+      linear-gradient(
+        120deg,
+        rgba(5, 6, 65, 0.85) 0%,
+        rgba(4, 2, 26, 0.7) 100%
+      ),
+      url('https://img.freepik.com/vetores-gratis/fundo-de-futebol-gradiente-dinamico_23-2149007789.jpg?semt=ais_hybrid&w=740')
+    `,
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+  }}
+>
     <Box minH="100vh" display="flex" flexDirection="column" style={{ background: "rgba(16, 25, 43, 0.7)" }}>
       <Flex
         w="100%"
@@ -166,14 +160,12 @@ const tabInicial = () => {
         align="center"
         position="relative"
       >   
-        <Image
-          maxW={"50%"}
-          w="8%"
-          justifyContent={"center"}
-          src="https://sdmntprsouthcentralus.oaiusercontent.com/files/00000000-a1d8-61f7-8811-8cdce9d52ee1/raw?se=2025-05-26T21%3A14%3A34Z&sp=r&sv=2024-08-04&sr=b&scid=c17396b5-f256-51cd-af5f-f412cd94af98&skoid=bbd22fc4-f881-4ea4-b2f3-c12033cf6a8b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-26T07%3A52%3A53Z&ske=2025-05-27T07%3A52%3A53Z&sks=b&skv=2024-08-04&sig=x6W3HmSrXZtWdlIEVr1t9ntw0Klmqgp1s6%2BzqNTYkCM%3D"
-          cursor="pointer"
-          onClick={() => router.refresh()}
-        />
+          <NextImage
+            src="/images/logo2.png"
+            alt="Logo"
+            width={100}
+            height={100}
+          />
         <Box position="relative" w="100%" maxW="700px" mx="auto">
           <Input
             borderRadius={"full"}
@@ -182,11 +174,11 @@ const tabInicial = () => {
             pl={12}
             fontSize="lg"
             placeholder="Buscar produtos..."
-            _placeholder={{ color: "rgba(0, 0, 0, 0.77)" }}
-            style={{ background: "rgba(146, 161, 211, 0.77)" }}
+            _placeholder={{ color: "rgba(255, 255, 255, 0.77)" }}
+            style={{ background: "rgba(13, 25, 66, 0.87)" }}
           />
           <Box position="absolute" left={4} top="50%" transform="translateY(-50%)">
-            <FaSearch color="black" size={18} />
+            <FaSearch color="white" size={18} />
           </Box>
         </Box>
         <Flex align="center" gap={6} minW="260px" justify="flex-end" ml="auto">
@@ -354,14 +346,14 @@ const tabInicial = () => {
                       ))}
                     </TabsList>
                     <TabsContent value={tabValue} current={true}>
-                      <ProductCarousel produtos={produtosFiltrados} />
+                    
                       {loadingProdutos ? (
                         <Center py={10}><Spinner size="lg" color="yellow.300" /></Center>
                       ) : (
                         <Flex wrap="wrap" gap={6} justify="center" mt={8}>
                           {produtosFiltrados.length === 0 ? (
                             <Text color="white" fontSize="lg">Nenhum produto encontrado.</Text>
-                          ) : (
+                          ) : ( 
                             produtosFiltrados.map(prod => (
                               <ProductCard key={prod.id} prod={prod} />
                             ))
@@ -378,47 +370,7 @@ const tabInicial = () => {
             <Cart />
           )}
           {sidebarSection === "adress" && (
-           <Box flex="1" p={8} display="flex" flexDirection="column" alignItems="center" w="100%">
-        <Text color="blue.300" fontSize="2xl" mb={6} fontWeight="bold">
-          Gerenciar Endereços
-        </Text>
-        <Input
-          placeholder="Digite o nome da rua"
-          mb={4}
-          w="100%"
-          maxW="400px"
-          bg="whiteAlpha.200"
-          color="white"
-          _placeholder={{ color: "whiteAlpha.600" }}
-          value={novoEndereco}
-          onChange={e => setNovoEndereco(e.target.value)}
-        />
-        <Button
-          colorScheme="blue"
-          mb={4}
-          onClick={handleAdicionarEndereco}
-          isLoading={loadingEndereco}
-        >
-          Adicionar Endereço
-        </Button>
-        {enderecos.length === 0 ? (
-          <Text color="white" fontSize="md">Nenhum endereço cadastrado.</Text>
-        ) : (
-          <VStack spacing={4} align="stretch" w="100%" maxW="400px">
-            {enderecos.map((end, idx) => (
-              <Box key={end.id || idx} p={4} bg="whiteAlpha.200" borderRadius="md">
-                <Text color="white" fontWeight="bold">{end.street}</Text>
-                {end.city && end.state && (
-                  <Text color="gray.200" fontSize="sm">{end.city} - {end.state}</Text>
-                )}
-                {end.zipCode && (
-                  <Text color="gray.400" fontSize="sm">CEP: {end.zipCode}</Text>
-                )}
-              </Box>
-            ))}
-          </VStack>
-        )}
-      </Box>
+            <Adress />
           )}
           {sidebarSection === "config" && (
             <Text color="white" fontSize="2xl" mt={10}>

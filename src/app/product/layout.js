@@ -14,7 +14,7 @@ export default function ProductLayout({ children }) {
     flexDirection="column"
     style={{
       background: "rgba(16, 25, 43, 0.97)",
-      backgroundImage: "url('https://static.vecteezy.com/ti/vetor-gratis/p1/10407633-fantastico-esportes-design-futurista-fundo-papel-de-parede-gratis-vetor.jpg')",
+      backgroundImage: "url('https://img.freepik.com/vetores-gratis/fundo-de-futebol-gradiente-dinamico_23-2149007789.jpg?semt=ais_hybrid&w=740')",
       backgroundSize: "cover",
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center",
@@ -38,7 +38,7 @@ export default function ProductLayout({ children }) {
                   </Button>
                   <Image
                       w="9%"
-                      src="https://sdmntprsouthcentralus.oaiusercontent.com/files/00000000-a1d8-61f7-8811-8cdce9d52ee1/raw?se=2025-05-26T21%3A14%3A34Z&sp=r&sv=2024-08-04&sr=b&scid=c17396b5-f256-51cd-af5f-f412cd94af98&skoid=bbd22fc4-f881-4ea4-b2f3-c12033cf6a8b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-26T07%3A52%3A53Z&ske=2025-05-27T07%3A52%3A53Z&sks=b&skv=2024-08-04&sig=x6W3HmSrXZtWdlIEVr1t9ntw0Klmqgp1s6%2BzqNTYkCM%3D"
+                      src="/images/logo2.png"
                       alt="Logo"
                   />
               </Flex>
