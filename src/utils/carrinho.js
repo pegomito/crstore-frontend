@@ -15,7 +15,15 @@ class Carrinho {
   }
 
   calculaSubtotal() {
-    this.subtotal = this.itens.reduce((acum, item) => acum + item.pegaValorTotalItem(), 0);
+    this.subtotal = this.itens.reduce((acum, item) => {
+      if (typeof item.pegaValorTotalItem === "function") {
+        return acum + item.pegaValorTotalItem();
+      }
+      if (typeof item.preco === "number" && typeof item.quantidade === "number") {
+        return acum + (item.preco * item.quantidade);
+      }
+      return acum;
+    }, 0);
     return this.subtotal;
   }
 

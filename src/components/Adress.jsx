@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Input, Text, VStack, Flex, IconButton } from "@chakra-ui/react";
+import { Box, Button, Input, Text, VStack, Flex } from "@chakra-ui/react";
 import api from "@/utils/axios";
 import EditDialog from "./EditDialog";
 import { toaster } from "./ui/toaster";
 import { MdDelete, MdMode } from "react-icons/md";
-
 
 export default function Adress() {
   const [enderecos, setEnderecos] = useState([]);
@@ -22,13 +21,28 @@ export default function Adress() {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editItem, setEditItem] = useState(null);
 
+  const getAuthHeader = () => {
+    const token = localStorage.getItem("authToken");
+    return { Authorization: `Bearer ${token}` };
+  };
+
   useEffect(() => {
     buscarEndereco();
   }, []);
 
   const buscarEndereco = async () => {
-    const res = await api.get("/adresses");
-    setEnderecos(res.data.data || []);
+    try {
+      const res = await api.get("/adresses", {
+        headers: getAuthHeader()
+      });
+      setEnderecos(res.data.data || []);
+    } catch (err) {
+      toaster.create({
+        title: "Erro ao buscar endereços",
+        description: err.response?.data?.message || err.message || "Erro ao buscar endereços",
+        type: "error"
+      });
+    }
   };
 
   const addAdress = async () => {
@@ -49,7 +63,9 @@ export default function Adress() {
     }
     setLoadingEndereco(true);
     try {
-      const res = await api.post("/adresses", novoEndereco);
+      const res = await api.post("/adresses", novoEndereco, {
+        headers: getAuthHeader()
+      });
       setEnderecos([res.data.data, ...enderecos]);
       setNovoEndereco({
         zipCode: "",
@@ -59,24 +75,38 @@ export default function Adress() {
         district: "",
         numberForget: ""
       });
+      toaster.create({
+        title: "Endereço adicionado com sucesso!",
+        description: "Os dados foram salvos.",
+        type: "success"
+      });
     } catch (err) {
-  console.error("Erro ao editar endereço:", err.response?.data || err.message || err);
-  alert(err.response?.data?.message || err.message || "Erro ao editar endereço");
-}
+      toaster.create({
+        title: "Erro ao adicionar endereço",
+        description: err.response?.data?.message || err.message || "Erro ao adicionar endereço",
+        type: "error"
+      });
+    }
     setLoadingEndereco(false);
   };
 
   const deletarAdress = async (id) => {
     try {
-      await api.delete(`/adresses/${id}`);
+      await api.delete(`/adresses/${id}`, {
+        headers: getAuthHeader()
+      });
       setEnderecos(enderecos.filter((e) => e.id !== id));
       toaster.create({
-      title: "Informações deeltadas com sucesso!",
-      description: "Os dados foram salvos.",
-      type: "success"
-    });
+        title: "Informações deletadas com sucesso!",
+        description: "Os dados foram salvos.",
+        type: "success"
+      });
     } catch (err) {
-      alert("Erro ao excluir endereço");
+      toaster.create({
+        title: "Erro ao excluir endereço",
+        description: err.response?.data?.message || err.message || "Erro ao excluir endereço",
+        type: "error"
+      });
     }
   };
 
@@ -86,26 +116,26 @@ export default function Adress() {
   };
 
   const saveEdit = async (edited) => {
-  try {
-    const res = await api.patch(`/adresses/${edited.id}`, edited);
-    setEnderecos(enderecos.map((e) => (e.id === edited.id ? res.data.data : e)));
-    setEditDialogOpen(false);
+    try {
+      const res = await api.patch(`/adresses/${edited.id}`, edited, {
+        headers: getAuthHeader()
+      });
+      setEnderecos(enderecos.map((e) => (e.id === edited.id ? res.data.data : e)));
+      setEditDialogOpen(false);
 
-     toaster.create({
-      title: "Informações atualizadas com sucesso!",
-      description: "Os dados foram salvos.",
-      type: "success"
-    });
-    
-  } catch (error) {
-    console.error("Erro ao editar endereço:", error.response?.data || error.message || error);
-    toaster.create({
-      title: "Erro ao editar endereço",
-      description: error.response?.data?.message || error.message || "Erro ao editar endereço",
-      type: "error"
-    });
-  }
-};
+      toaster.create({
+        title: "Informações atualizadas com sucesso!",
+        description: "Os dados foram salvos.",
+        type: "success"
+      });
+    } catch (error) {
+      toaster.create({
+        title: "Erro ao editar endereço",
+        description: error.response?.data?.message || error.message || "Erro ao editar endereço",
+        type: "error"
+      });
+    }
+  };
 
   const headers = [
     { key: "id", label: "ID" },
@@ -129,8 +159,7 @@ export default function Adress() {
         headers={headers}
         onSave={saveEdit}
       />
-      
-      
+
       {enderecos.length === 0 ? (
         <Text color="white" fontSize="md">Nenhum endereço cadastrado.</Text>
       ) : (
@@ -149,31 +178,31 @@ export default function Adress() {
                     CEP: {end.zipCode}
                   </Text>
                 </Box>
-               <Flex gap={2}>
-                          <Button
-                              colorScheme="yellow"
-                              variant="solid"
-                              leftIcon={<MdMode />}
-                              onClick={() => editAdress(end)}
-                          >
-                              Editar
-                          </Button>
-                          <Button
-                              colorScheme="red"
-                              variant="solid"
-                              leftIcon={<MdDelete />}
-                              onClick={() => deletarAdress(end.id)}
-                          >
-                              Excluir
-                          </Button>
-                      </Flex>
+                <Flex gap={2}>
+                  <Button
+                    colorScheme="yellow"
+                    variant="solid"
+                    leftIcon={<MdMode />}
+                    onClick={() => editAdress(end)}
+                  >
+                    Editar
+                  </Button>
+                  <Button
+                    colorScheme="red"
+                    variant="solid"
+                    leftIcon={<MdDelete />}
+                    onClick={() => deletarAdress(end.id)}
+                  >
+                    Excluir
+                  </Button>
+                </Flex>
               </Flex>
             </Box>
           ))}
         </VStack>
       )}
 
-       <Text color="white.300" fontSize="2xl" mb={6} mt={4} fontWeight="bold">
+      <Text color="white.300" fontSize="2xl" mb={6} mt={4} fontWeight="bold">
         Adicionar Novo Endereço
       </Text>
 
@@ -227,7 +256,7 @@ export default function Adress() {
           onChange={e => setNovoEndereco({ ...novoEndereco, numberForget: e.target.value })}
         />
       </VStack>
-     <Button
+      <Button
         colorScheme="blue"
         mb={4}
         onClick={addAdress}
@@ -236,7 +265,7 @@ export default function Adress() {
         maxW="400px"
       >
         Adicionar Endereço
-      </Button>     
+      </Button>
     </Box>
   );
 }

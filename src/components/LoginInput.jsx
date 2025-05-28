@@ -37,7 +37,7 @@ export default function LoginInput({ onLogin }) {
     onLogin(formData);
   };
 
-  const handleSendRecoverEmail = async () => {
+  const sendRecoverEmail = async () => {
     if (!recoverEmail) {
       toaster.create({
         title: "Erro",
@@ -63,7 +63,7 @@ export default function LoginInput({ onLogin }) {
     }
   };
 
-  const handleChangePassword = async () => {
+  const changePassword = async () => {
     if (!recoverToken || !newPassword) {
       toaster.create({
         title: "Erro",
@@ -96,7 +96,7 @@ export default function LoginInput({ onLogin }) {
     }
   };
 
-  const handleOpenDialog = () => {
+  const openDialog = () => {
     setStep(1);
     setRecoverEmail("");
     setRecoverToken("");
@@ -125,7 +125,7 @@ export default function LoginInput({ onLogin }) {
         <Button
           colorScheme="gray"
           variant="link"
-          onClick={handleOpenDialog}
+          onClick={openDialog}
         >
           Esqueci minha senha
         </Button>
@@ -169,7 +169,7 @@ export default function LoginInput({ onLogin }) {
                         value={recoverEmail}
                         onChange={e => setRecoverEmail(e.target.value)}
                       />
-                      <Button colorScheme="blue" onClick={handleSendRecoverEmail}>
+                      <Button colorScheme="blue" onClick={sendRecoverEmail}>
                         Enviar código
                       </Button>
                     </>
@@ -186,7 +186,7 @@ export default function LoginInput({ onLogin }) {
                         value={newPassword}
                         onChange={e => setNewPassword(e.target.value)}
                       />
-                      <Button colorScheme="blue" onClick={handleChangePassword}>
+                      <Button colorScheme="blue" onClick={changePassword}>
                         Alterar senha
                       </Button>
                     </>

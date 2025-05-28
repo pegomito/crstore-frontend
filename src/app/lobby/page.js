@@ -86,19 +86,20 @@ const tabInicial = () => {
   const [loadingProdutos, setLoadingProdutos] = useState(true);
   const [user, setUser] = useState(null);
 
-  // Verificação de login
+ 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (!token) {
       router.replace("/Login");
       return;
     }
-    // Validação opcional no backend
+    
     api.get("/users/token", {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => {
-        setUser(res.data.response); // dados do usuário
+        console.log("user:", res.data.response);
+        setUser(res.data.response); 
       })
       .catch(() => {
         localStorage.removeItem("authToken");
@@ -186,17 +187,37 @@ const tabInicial = () => {
             <FaHeart />
             <Text ml={2} fontSize="md" display={["none", "block"]}>Lista de Desejos</Text>
           </Flex>
-          <Button
-            leftIcon={<FaUser />}
-            colorScheme="whiteAlpha"
-            variant="ghost"
-            color="white"
-            _hover={{ bg: "whiteAlpha.300" }}
-            borderRadius="full"
-            onClick={() => router.push("/Login")}
-          >
-            Entrar
-          </Button>
+          {user ? (
+              <Box
+                style={{ background: "rgb(87, 106, 128)", 
+                  color: "rgba(209, 209, 209, 0.97)",
+                }}
+                borderRadius="full"
+                w="40px"
+                h="40px"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                fontWeight="bold"
+                fontSize="xl"
+                cursor="pointer"
+                title={user.username || user.name}
+              >
+                {(user.username || user.name || "").charAt(0).toUpperCase()}
+              </Box>
+            ) : (
+              <Button
+                leftIcon={<FaUser />}
+                colorScheme="whiteAlpha"
+                variant="ghost"
+                color="white"
+                _hover={{ bg: "whiteAlpha.300" }}
+                borderRadius="full"
+                onClick={() => router.push("/Login")}
+              >
+                Entrar
+              </Button>
+            )}
           <Box position="relative" color="white" cursor="pointer">
             <FaShoppingCart size={22} />
             <Box position="absolute"></Box>

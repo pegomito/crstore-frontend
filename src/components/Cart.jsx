@@ -16,9 +16,7 @@ export default function Cart() {
     try {
       const resumo = carrinho.finalizaCompra();
       alert(
-        `Compra finalizada!\nSubtotal: R$ ${resumo.subtotal.toFixed(
-          2
-        )}\nFrete: R$ ${resumo.frete.toFixed(2)}\nTotal: R$ ${resumo.total.toFixed(2)}`
+        `Compra finalizada!\nSubtotal: R$ ${(resumo.subtotal ?? 0).toFixed(2)}\nFrete: R$ ${(resumo.frete ?? 0).toFixed(2)}\nTotal: R$ ${(resumo.total ?? 0).toFixed(2)}`
       );
       limparCarrinho();
       setFrete(0);
@@ -43,13 +41,13 @@ export default function Cart() {
                 <Text color="gray.200" fontSize="sm">Qtd: {item.quantidade}</Text>
               </Box>
               <Text color="blue.300" fontWeight="bold">
-                R$ {item.pegaValorTotalItem().toFixed(2)}
+                R$ {(item.preco * item.quantidade).toFixed(2)}
               </Text>
             </Flex>
           ))}
           <Flex justify="space-between" align="center" mt={2}>
             <Text fontWeight="bold" color="white">Subtotal:</Text>
-            <Text fontWeight="bold" color="white.300">R$ {carrinho.subtotal.toFixed(2)}</Text>
+            <Text fontWeight="bold" color="white.300">R$ {(carrinho.subtotal ?? 0).toFixed(2)}</Text>
           </Flex>
           <Flex justify="space-between" align="center">
             <Text fontWeight="bold" color="white">Frete:</Text>
@@ -65,7 +63,7 @@ export default function Cart() {
           </Flex>
           <Flex justify="space-between" align="center">
             <Text fontWeight="bold" color="white">Total:</Text>
-            <Text fontWeight="bold" color="white.300">R$ {carrinho.total.toFixed(2)}</Text>
+            <Text fontWeight="bold" color="white.300">R$ {(carrinho.total ?? 0).toFixed(2)}</Text>
           </Flex>
           <Button colorScheme="green" onClick={fimCompra}>
             Finalizar Compra

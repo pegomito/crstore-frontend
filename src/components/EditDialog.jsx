@@ -11,7 +11,6 @@ export default function EditDialog({ isOpen, onClose, item, headers, onSave }) {
 
   const saveEdit = () => {
     onSave(localItem);
-
     onClose();
   };
 
@@ -19,9 +18,9 @@ export default function EditDialog({ isOpen, onClose, item, headers, onSave }) {
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
       <Portal>
         <Dialog.Content
-          key={item?.id} 
+          key={item?.id}
           style={{
-            background:"rgba(3, 9, 49)",
+            background: "rgba(3, 9, 49)",
             borderRadius: 12,
             padding: 24,
             position: "fixed",
@@ -33,7 +32,6 @@ export default function EditDialog({ isOpen, onClose, item, headers, onSave }) {
             maxHeight: "80vh",
             overflow: "auto",
             zIndex: 1500,
-            boxShadow: "0 8px 32px rgba(50, 53, 173, 0.25)",
             display: "flex",
             flexDirection: "column",
           }}
@@ -72,7 +70,6 @@ export default function EditDialog({ isOpen, onClose, item, headers, onSave }) {
             </Button>
             <Button colorScheme="teal" onClick={saveEdit}>
               Salvar
-
             </Button>
           </Dialog.Footer>
         </Dialog.Content>
