@@ -7,30 +7,53 @@ const CarrinhoContext = createContext();
 
 export function CarrinhoProvider({ children }) {
   const [carrinho, setCarrinho] = useState(new Carrinho());
+  const [token, setToken] = useState(null);
 
+  // Pega o token do localStorage só no cliente
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (!token) return;
+    if (typeof window !== "undefined") {
+      setToken(localStorage.getItem("authToken"));
+    }
+  }, []);
+
+  // Atualiza token se mudar no localStorage (login/logout)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onStorage = () => setToken(localStorage.getItem("authToken"));
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
+  // Sempre que o token mudar, recarrega o carrinho do backend
+  useEffect(() => {
+    if (!token) {
+      setCarrinho(new Carrinho());
+      return;
+    }
     api.get("/cart", { headers: { Authorization: `Bearer ${token}` } })
       .then(res => {
         if (res.data && res.data.cart) {
           const backendCarrinho = Object.assign(new Carrinho(), res.data.cart);
-          // Converte cada item em instância de Item
           backendCarrinho.itens = (backendCarrinho.itens || []).map(
-            i => new Item(i.nome, i.preco, i.quantidade)
+            i => new Item(
+              i.nome,
+              typeof i.preco === "number" ? i.preco : Number(i.valor) || 0,
+              i.quantidade
+            )
           );
           setCarrinho(backendCarrinho);
         }
       });
-  }, []);
+  }, [token]);
 
   function sincronizarCarrinhoBackend(novoCarrinho) {
-    const token = localStorage.getItem("authToken");
+    if (!token) return;
     api.post("/cart", { cart: novoCarrinho }, { headers: { Authorization: `Bearer ${token}` } });
   }
 
   function adicionarProduto(produto, quantidade = 1) {
-    const item = new Item(produto.name, Number(produto.price), quantidade);
+    const preco = Number(produto.price ?? produto.preco ?? produto.valor) || 0;
+    const item = new Item(produto.name ?? produto.nome, preco, quantidade);
     carrinho.adiciona(item);
     carrinho.calculaTotal();
     setCarrinho(Object.assign(new Carrinho(), carrinho));
@@ -40,19 +63,20 @@ export function CarrinhoProvider({ children }) {
   function limparCarrinho() {
     carrinho.limpar();
     setCarrinho(new Carrinho());
-    const token = localStorage.getItem("authToken");
+    if (!token) return;
     api.delete("/cart", { headers: { Authorization: `Bearer ${token}` } });
   }
 
-  function adicionaFrete(valor) {
-    carrinho.adicionaFrete(valor);
-    carrinho.calculaTotal();
-    setCarrinho(Object.assign(new Carrinho(), carrinho));
-    sincronizarCarrinhoBackend(carrinho);
+  function removerItem(idx) {
+    const novoCarrinho = Object.assign(new Carrinho(), carrinho);
+    novoCarrinho.removerItem(idx);
+    novoCarrinho.calculaTotal();
+    setCarrinho(novoCarrinho);
+    sincronizarCarrinhoBackend(novoCarrinho);
   }
 
   return (
-    <CarrinhoContext.Provider value={{ carrinho, adicionarProduto, limparCarrinho, adicionaFrete }}>
+    <CarrinhoContext.Provider value={{ carrinho, adicionarProduto, limparCarrinho, removerItem }}>
       {children}
     </CarrinhoContext.Provider>
   );

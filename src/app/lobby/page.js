@@ -162,7 +162,7 @@ const tabInicial = () => {
         position="relative"
       >   
           <NextImage
-            src="/images/logo2.png"
+            src="/images/logo5.png"
             alt="Logo"
             width={100}
             height={100}
@@ -189,8 +189,8 @@ const tabInicial = () => {
           </Flex>
           {user ? (
               <Box
-                style={{ background: "rgb(87, 106, 128)", 
-                  color: "rgba(209, 209, 209, 0.97)",
+                style={{ background: "rgb(53, 96, 145)", 
+                  color: "rgba(155, 181, 196, 0.97)",
                 }}
                 borderRadius="full"
                 w="40px"

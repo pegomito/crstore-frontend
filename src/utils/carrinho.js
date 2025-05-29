@@ -10,17 +10,14 @@ class Carrinho {
     this.itens.push(item);
   }
 
-  adicionaFrete(valor) {
-    this.frete = valor;
-  }
 
   calculaSubtotal() {
     this.subtotal = this.itens.reduce((acum, item) => {
-      if (typeof item.pegaValorTotalItem === "function") {
-        return acum + item.pegaValorTotalItem();
-      }
       if (typeof item.preco === "number" && typeof item.quantidade === "number") {
         return acum + (item.preco * item.quantidade);
+      }
+      if (typeof item.pegaValorTotalItem === "function") {
+        return acum + item.pegaValorTotalItem();
       }
       return acum;
     }, 0);
@@ -44,6 +41,10 @@ class Carrinho {
       total: this.total,
       itens: this.itens,
     };
+  }
+
+  removerItem(idx) {
+    this.itens.splice(idx, 1);
   }
 
   limpar() {

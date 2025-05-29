@@ -1,16 +1,10 @@
 import React, { useState } from "react";
 import { Box, Text, VStack, Flex, Button, Input } from "@chakra-ui/react";
-import { useCarrinho } from "../context/CarrinhoContext";
+import { useCarrinho } from "@/context/CarrinhoContext";
 
 export default function Cart() {
-  const { carrinho, limparCarrinho, adicionaFrete } = useCarrinho();
-  const [frete, setFrete] = useState(carrinho.frete);
+  const { carrinho, limparCarrinho, removerItem } = useCarrinho();
 
-  const calculaFrete = (e) => {
-    const valor = Number(e.target.value);
-    setFrete(valor);
-    adicionaFrete(valor);
-  };
 
   const fimCompra = () => {
     try {
@@ -43,6 +37,9 @@ export default function Cart() {
               <Text color="blue.300" fontWeight="bold">
                 R$ {(item.preco * item.quantidade).toFixed(2)}
               </Text>
+              <Button colorScheme="red" size="sm" ml={2} onClick={() => removerItem(idx)}>
+                Remover
+              </Button>
             </Flex>
           ))}
           <Flex justify="space-between" align="center" mt={2}>
@@ -50,16 +47,8 @@ export default function Cart() {
             <Text fontWeight="bold" color="white.300">R$ {(carrinho.subtotal ?? 0).toFixed(2)}</Text>
           </Flex>
           <Flex justify="space-between" align="center">
-            <Text fontWeight="bold" color="white">Frete:</Text>
-            <Input
-              type="number"
-              value={frete}
-              onChange={calculaFrete}
-              w="100px"
-              bg="whiteAlpha.200"
-              color="white"
-              size="sm"
-            />
+            <Text fontWeight="bold" color="white">Cupom:</Text>
+            
           </Flex>
           <Flex justify="space-between" align="center">
             <Text fontWeight="bold" color="white">Total:</Text>

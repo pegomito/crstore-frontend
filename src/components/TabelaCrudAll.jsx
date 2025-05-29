@@ -1,4 +1,4 @@
-import { Table, Button, Stack, Tooltip } from "@chakra-ui/react";
+import { Table, Button, Stack, Tooltip, Flex, Box } from "@chakra-ui/react";
 import { MdDelete, MdMode } from "react-icons/md";
 import { useState } from "react";
 import EditDialog from "@/components/EditDialog";
@@ -31,7 +31,8 @@ export default function TabelaCrudAll({ items, headers, onEdit, onDelete, acoes 
         headers={headers}
         onSave={editSave}
       />
-      <Table.Root width="75%" size="sm" striped variant="outline">
+      <Box  >
+      <Table.Root width="40%" size="sm" striped variant="outline">
         <Table.Header>
           <Table.Row>
             {headers.map((header, i) => (
@@ -85,6 +86,7 @@ export default function TabelaCrudAll({ items, headers, onEdit, onDelete, acoes 
           ))}
         </Table.Body>
       </Table.Root>
+      </Box>
     </>
   );
 }

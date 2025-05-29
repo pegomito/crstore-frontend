@@ -15,11 +15,11 @@ export default function RegisterInput({ onRegisterSuccess }) {
     role: ""
   });
 
-  const handleChange = (e) => {
+  const mudarInfo = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleRegister = async () => {
+  const cadastrarInfo = async () => {
     const { name, cpf, username, phone, password, email } = formData;
 
     if (!name || !cpf || !username || !phone || !password || !email) {
@@ -61,42 +61,42 @@ export default function RegisterInput({ onRegisterSuccess }) {
       <Input
         name="name"
         placeholder="Nome"
-        onChange={handleChange}
+        onChange={mudarInfo}
         borderColor="white"
         _placeholder={{ color: "white" }}
       />
       <Input
         name="cpf"
         placeholder="CPF"
-        onChange={handleChange}
+        onChange={mudarInfo}
         borderColor="white"
         _placeholder={{ color: "white" }}
       />
       <Input
         name="username"
         placeholder="Username"
-        onChange={handleChange}
+        onChange={mudarInfo}
         borderColor="white"
         _placeholder={{ color: "white" }}
       />
       <Input
         name="phone"
         placeholder="Telefone"
-        onChange={handleChange}
+        onChange={mudarInfo}
         borderColor="white"
         _placeholder={{ color: "white" }}
       />
       <Input
         name="email"
         placeholder="E-mail"
-        onChange={handleChange}
+        onChange={mudarInfo}
         borderColor="white"
         _placeholder={{ color: "white" }}
       />
       <Input
         name="role"
         placeholder="Cargo (ex: admin, user)"
-        onChange={handleChange}
+        onChange={mudarInfo}
         borderColor="white"
         _placeholder={{ color: "white" }}
       />
@@ -104,11 +104,11 @@ export default function RegisterInput({ onRegisterSuccess }) {
         name="password"
         type="password"
         placeholder="Senha"
-        onChange={handleChange}
+        onChange={mudarInfo}
         borderColor="white"
         _placeholder={{ color: "white" }}
       />
-      <Button onClick={handleRegister} colorScheme="blue">
+      <Button onClick={cadastrarInfo} colorScheme="blue">
         Cadastrar
       </Button>
     </Stack>

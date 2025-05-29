@@ -5,20 +5,15 @@ import { useParams } from "next/navigation";
 import { Box, Text, Image, Spinner, Center, Button, Flex, VStack, Select, Portal, createListCollection   } from "@chakra-ui/react";
 import api from "@/utils/axios";
 import { Toaster, toaster } from "@/components/ui/toaster"
+import { useCarrinho } from "@/context/CarrinhoContext";
 
 
-// Função utilitária para adicionar ao carrinho
-function addToCart(product) {
-  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-  cart.push(product);
-  localStorage.setItem("cart", JSON.stringify(cart));
-}
 
 export default function ProductDetailPage() {
   const { id } = useParams();
   const [produto, setProduto] = useState(null);
   const [loading, setLoading] = useState(true);
- 
+  const { adicionarProduto } = useCarrinho();
 
   useEffect(() => {
     if (!id) return;
@@ -112,23 +107,21 @@ export default function ProductDetailPage() {
         </Select.Positioner>
       </Portal>
     </Select.Root>
-          <Button
-            colorScheme="yellow"
-            size="md"
-            fontWeight="bold"
-            px={8}
-            onClick={() => {
-              addToCart(produto);
-               toaster.create({
-        title: "Sucesso",
-        description:  "Produto adicionado ao carrinho!",
-        type: "success",
-      });
-            }}
-          >
-
-            Adicionar ao Carrinho
-          </Button>
+         <Button
+  colorScheme="yellow"
+  size="md"
+  fontWeight="bold"
+  px={8}
+  onClick={() => {
+    adicionarProduto(produto, 1);
+    toaster.create({
+      title: "Produto adicionado ao carrinho",
+      description: `${produto.name} foi adicionado ao seu carrinho.`,
+    });
+  }}
+>
+  Adicionar ao Carrinho
+</Button>
 
           <Button
             variant="outline"

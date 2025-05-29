@@ -1,12 +1,12 @@
 class Item {
-  constructor(nome, valor, quantidade) {
+  constructor(nome, preco, quantidade) {
     this.nome = nome;
-    this.valor = valor;
+    this.preco = preco;
     this.quantidade = quantidade;
   }
 
   pegaValorTotalItem() {
-    return this.quantidade * this.valor;
+    return (this.preco || 0) * (this.quantidade || 0);
   }
 }
 
