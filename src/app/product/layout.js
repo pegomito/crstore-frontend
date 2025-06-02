@@ -38,7 +38,7 @@ export default function ProductLayout({ children }) {
                   </Button>
                   <Image
                       w="9%"
-                      src="/images/logo2.png"
+                      src="/images/logo5.png"
                       alt="Logo"
                   />
               </Flex>

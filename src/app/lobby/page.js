@@ -302,12 +302,12 @@ const tabInicial = () => {
               py={2}
               px={4}
               borderRadius="md"
-              bg={sidebarSection === "ofertas" ? "blue.600" : "transparent"}
+              bg={sidebarSection === "pedidos" ? "blue.600" : "transparent"}
               _hover={{ bg: "blue.600" }}
-              onClick={() => setSidebarSection("ofertas")}
+              onClick={() => setSidebarSection("pedidos")}
             >
               <Icon as={BiSolidOffer} mr={2} />
-              Ofertas
+              Meus Pedidos
             </Box>
             <Box
               as="button"
@@ -398,7 +398,7 @@ const tabInicial = () => {
               -
             </Text>
           )}
-          {sidebarSection === "ofertas" && (
+          {sidebarSection === "pedidos" && (
             <Text color="white" fontSize="2xl" mt={10}>
               -
             </Text>

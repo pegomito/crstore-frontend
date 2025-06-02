@@ -35,7 +35,6 @@ export default function ProductCard({ prod }) {
         </Link>
         <Button
           colorScheme="yellow"
-          mt={2}
           onClick={() => {
             adicionarProduto(prod, 1);
             toaster.create({

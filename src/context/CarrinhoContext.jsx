@@ -8,15 +8,13 @@ const CarrinhoContext = createContext();
 export function CarrinhoProvider({ children }) {
   const [carrinho, setCarrinho] = useState(new Carrinho());
   const [token, setToken] = useState(null);
-
-  // Pega o token do localStorage só no cliente
+  
   useEffect(() => {
     if (typeof window !== "undefined") {
       setToken(localStorage.getItem("authToken"));
     }
   }, []);
 
-  // Atualiza token se mudar no localStorage (login/logout)
   useEffect(() => {
     if (typeof window === "undefined") return;
     const onStorage = () => setToken(localStorage.getItem("authToken"));
@@ -24,7 +22,6 @@ export function CarrinhoProvider({ children }) {
     return () => window.removeEventListener("storage", onStorage);
   }, []);
 
-  // Sempre que o token mudar, recarrega o carrinho do backend
   useEffect(() => {
     if (!token) {
       setCarrinho(new Carrinho());

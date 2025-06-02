@@ -3,9 +3,10 @@
   "/_not-found/page": "app/_not-found/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/lobby/page": "app/lobby/page.js",
-  "/novo/page": "app/novo/page.js",
+  "/page": "app/page.js",
   "/product/[id]/page": "app/product/[id]/page.js",
   "/tasksAdress/page": "app/tasksAdress/page.js",
-  "/tasksProducts/page": "app/tasksProducts/page.js",
+  "/tasksCoupons/page": "app/tasksCoupons/page.js",
+  "/tasksPayment/page": "app/tasksPayment/page.js",
   "/tasksUser/page": "app/tasksUser/page.js"
 }

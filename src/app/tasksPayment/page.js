@@ -41,7 +41,7 @@ export default function TasksOrders() {
 
   const buscarOrders = async () => {
     try {
-      const response = await api.get("/orders");
+      const response = await api.get("/");
       setOrders(response.data.data || response.data);
     } catch (error) {
       toaster.create({
