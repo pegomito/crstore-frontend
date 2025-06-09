@@ -22,10 +22,11 @@ export default function EditDialog({ isOpen, onClose, item, headers, onSave }) {
           style={{
             background: "rgba(3, 9, 49)",
             borderRadius: 12,
-            padding: 24,
+            padding: 10,
+            margin: 10,
             position: "fixed",
             top: "50%",
-            left: "50%",
+            left: "55%",
             transform: "translate(-50%, -50%)",
             minWidth: 340,
             maxWidth: 500,

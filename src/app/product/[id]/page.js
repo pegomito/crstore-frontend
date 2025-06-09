@@ -107,21 +107,21 @@ export default function ProductDetailPage() {
         </Select.Positioner>
       </Portal>
     </Select.Root>
-         <Button
-  colorScheme="yellow"
-  size="md"
-  fontWeight="bold"
-  px={8}
-  onClick={() => {
-    adicionarProduto(produto, 1);
-    toaster.create({
-      title: "Produto adicionado ao carrinho",
-      description: `${produto.name} foi adicionado ao seu carrinho.`,
-    });
-  }}
->
-  Adicionar ao Carrinho
-</Button>
+          <Button
+            colorScheme="yellow"
+            size="md"
+            fontWeight="bold"
+            px={8}
+            onClick={() => {
+              adicionarProduto(produto, 1);
+              toaster.create({
+                title: "Produto adicionado ao carrinho",
+                description: `${produto.name} foi adicionado ao seu carrinho.`,
+              });
+            }}
+          >
+            Adicionar ao Carrinho
+          </Button>
 
           <Button
             variant="outline"

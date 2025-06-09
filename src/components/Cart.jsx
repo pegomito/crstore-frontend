@@ -154,6 +154,7 @@ export default function Cart() {
                       position="absolute"
                       top={2}
                       right={2}
+                      left="55%"
                       colorScheme="red"
                       size="sm"
                       variant="ghost"
@@ -172,7 +173,7 @@ export default function Cart() {
                       cupomObj={cupomObj}
                       limparCarrinho={limparCarrinho}
                       onSuccess={fimCompra}
-                      onCancel={() => setDialogOpen(false)} // <-- Aqui está o onCancel
+                      onCancel={() => setDialogOpen(false)} 
                     />
                   </Dialog.Body>
                   <Dialog.Footer />
